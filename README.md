@@ -58,6 +58,10 @@ No build step, no dependencies.
 
 Layover is free. If it saves you time, you can [buy me a coffee](https://buymeacoffee.com/uygardev). ☕
 
+## License
+
+[MIT](LICENSE)
+
 ---
 
 ### Türkçe
