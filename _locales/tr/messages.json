@@ -1,0 +1,194 @@
+{
+  "extName": {
+    "message": "Layover – Linkler için mini pencere"
+  },
+  "extDescription": {
+    "message": "Diğer uygulamalardan gelen linkler önce küçük, geçici bir pencereye uğrar. İşine yararsa tek tıkla sekmelere ekle, yaramazsa kapat."
+  },
+  "actionTitle": {
+    "message": "Layover: bu sekmeyi mini pencerede aç"
+  },
+  "cmdOpenInMain": {
+    "message": "Mini penceredeki sayfayı ana pencereye sekme olarak taşı"
+  },
+  "menuOpenInMain": {
+    "message": "Sekmelere ekle"
+  },
+  "menuOpenLink": {
+    "message": "Layover ile aç"
+  },
+  "barAdd": {
+    "message": "Sekmelere ekle"
+  },
+  "barAddTitle": {
+    "message": "Bu sayfayı ana pencerede sekme olarak aç"
+  },
+  "barClose": {
+    "message": "Kapat"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Diğer uygulamalardan (Mail, Slack, Mesajlar…) gelen linkler önce mini pencereye uğrar."
+  },
+  "optTry": {
+    "message": "Dene"
+  },
+  "optEnabled": {
+    "message": "Diğer uygulamalardan gelen linkleri mini pencerede aç"
+  },
+  "optEffects": {
+    "message": "Animasyonlar"
+  },
+  "optEffectsHint": {
+    "message": "Sayfa yavaşça belirir ve kaybolur, butonlar kayarak gelir, pencere kapanırken kayarak gider."
+  },
+  "optPosition": {
+    "message": "Buton konumu"
+  },
+  "posTopCenter": {
+    "message": "Üst"
+  },
+  "posTopRight": {
+    "message": "Sağ üst"
+  },
+  "posBottomCenter": {
+    "message": "Alt"
+  },
+  "posBottomRight": {
+    "message": "Sağ alt"
+  },
+  "optSize": {
+    "message": "Pencere boyutu"
+  },
+  "optSizeHint": {
+    "message": "Mini pencereyi elle boyutlandırınca burası da güncellenir."
+  },
+  "optShortcuts": {
+    "message": "Kısayollar"
+  },
+  "optShortcutAdd": {
+    "message": "Sekmelere ekle"
+  },
+  "optShortcutClose": {
+    "message": "Kapat"
+  },
+  "optShortcutMax": {
+    "message": "Pencereyi büyüt"
+  },
+  "optShortcutMaxValue": {
+    "message": "Sekmelere ekler"
+  },
+  "optChangeShortcut": {
+    "message": "Kısayolu değiştir"
+  },
+  "optPrivacy": {
+    "message": "Her şey cihazında çalışır. Layover gezinme verilerini toplamaz, saklamaz, hiçbir yere göndermez."
+  },
+  "optDebug": {
+    "message": "Tanılama kaydı (sadece bu cihazda kalır)"
+  },
+  "optLogEmpty": {
+    "message": "Henüz kayıt yok"
+  },
+  "optSaved": {
+    "message": "Kaydedildi"
+  },
+  "optLinkShortcut": {
+    "message": "Linki mini pencerede aç"
+  },
+  "optClick": {
+    "message": "tık"
+  },
+  "optOff": {
+    "message": "Kapalı"
+  },
+  "hintPrimaryAlt": {
+    "message": "Boşta: tarayıcıda normalde {primary} + tık ile aynı işi yapar."
+  },
+  "hintAltShift": {
+    "message": "Boşta: tarayıcıda normalde {shift} + tık ile aynı işi yapar."
+  },
+  "hintShift": {
+    "message": "Tarayıcının {shift} + tık kısayolunun (linki yeni pencerede aç) yerine geçer."
+  },
+  "hintAlt": {
+    "message": "Tarayıcının {alt} + tık kısayolunun (linki indir) yerine geçer."
+  },
+  "hintOff": {
+    "message": "Linke sağ tık › Layover ile aç yine çalışır."
+  },
+  "hintAlso": {
+    "message": "Sağ tık › Layover ile aç da çalışır."
+  },
+  "cmdPopTab": {
+    "message": "Açık sekmeyi mini pencerede aç"
+  },
+  "barBack": {
+    "message": "Geri"
+  },
+  "barCopy": {
+    "message": "Linki kopyala"
+  },
+  "barCopied": {
+    "message": "Kopyalandı"
+  },
+  "optSites": {
+    "message": "Mini pencerede hiç açılmasın"
+  },
+  "optSitesHint": {
+    "message": "Diğer uygulamalardan bu sitelere gelen linkler normal sekmede açılır. Kısayol ve sağ tık yine çalışır."
+  },
+  "optSitesPlaceholder": {
+    "message": "Site ekle, örn. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Ekle"
+  },
+  "optSitesEmpty": {
+    "message": "Henüz site yok"
+  },
+  "optSitesRemove": {
+    "message": "Kaldır"
+  },
+  "optSitesInvalid": {
+    "message": "zoom.us gibi bir site adı yaz"
+  },
+  "optAutoClose": {
+    "message": "Kullanılmayan mini pencereleri kapat"
+  },
+  "optAutoCloseHint": {
+    "message": "Bu süre boyunca bakmadığın mini pencere kendiliğinden kapanır."
+  },
+  "optNever": {
+    "message": "Hiçbir zaman"
+  },
+  "optHours": {
+    "message": "{n} sa"
+  },
+  "optShortcutTab": {
+    "message": "Bu sekmeyi mini pencereye al"
+  },
+  "optShortcutTabValue": {
+    "message": "Araç çubuğundaki Layover ikonuna tıkla"
+  },
+  "menuSearch": {
+    "message": "Layover ile ara: “%s”"
+  },
+  "optShortcutSearch": {
+    "message": "Seçili metni ara"
+  },
+  "optShortcutSearchValue": {
+    "message": "Sağ tık › Layover ile ara"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover ücretsiz"
+  },
+  "optCoffeeText": {
+    "message": "İşine yarıyorsa bir kahve ısmarlayarak destek olabilirsin."
+  },
+  "optCoffeeButton": {
+    "message": "Bir kahve ısmarla"
+  }
+}

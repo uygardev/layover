@@ -1,0 +1,194 @@
+{
+  "extName": {
+    "message": "Layover – Mini window for links"
+  },
+  "extDescription": {
+    "message": "Links from other apps stop over in a small, temporary window. Keep the page as a tab with one click, or close it."
+  },
+  "actionTitle": {
+    "message": "Layover: open this tab in a mini window"
+  },
+  "cmdOpenInMain": {
+    "message": "Move the mini window's page into the main window as a tab"
+  },
+  "menuOpenInMain": {
+    "message": "Add to tabs"
+  },
+  "menuOpenLink": {
+    "message": "Open in Layover"
+  },
+  "barAdd": {
+    "message": "Add to tabs"
+  },
+  "barAddTitle": {
+    "message": "Open this page as a tab in the main window"
+  },
+  "barClose": {
+    "message": "Close"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Links from other apps (Mail, Slack, Messages…) stop over in a mini window first."
+  },
+  "optTry": {
+    "message": "Try it"
+  },
+  "optEnabled": {
+    "message": "Open links from other apps in a mini window"
+  },
+  "optEffects": {
+    "message": "Animations"
+  },
+  "optEffectsHint": {
+    "message": "The page fades in and out, buttons slide in, the window slides away when closed."
+  },
+  "optPosition": {
+    "message": "Button position"
+  },
+  "posTopCenter": {
+    "message": "Top"
+  },
+  "posTopRight": {
+    "message": "Top right"
+  },
+  "posBottomCenter": {
+    "message": "Bottom"
+  },
+  "posBottomRight": {
+    "message": "Bottom right"
+  },
+  "optSize": {
+    "message": "Window size"
+  },
+  "optSizeHint": {
+    "message": "Resizing a mini window by hand also updates this."
+  },
+  "optShortcuts": {
+    "message": "Shortcuts"
+  },
+  "optShortcutAdd": {
+    "message": "Add to tabs"
+  },
+  "optShortcutClose": {
+    "message": "Close"
+  },
+  "optShortcutMax": {
+    "message": "Maximize the window"
+  },
+  "optShortcutMaxValue": {
+    "message": "Adds to tabs"
+  },
+  "optChangeShortcut": {
+    "message": "Change shortcut"
+  },
+  "optPrivacy": {
+    "message": "Everything runs on your device. Layover doesn't collect, store or send your browsing data."
+  },
+  "optDebug": {
+    "message": "Diagnostics log (stays on this device)"
+  },
+  "optLogEmpty": {
+    "message": "No entries yet"
+  },
+  "optSaved": {
+    "message": "Saved"
+  },
+  "optLinkShortcut": {
+    "message": "Open a link in a mini window"
+  },
+  "optClick": {
+    "message": "click"
+  },
+  "optOff": {
+    "message": "Off"
+  },
+  "hintPrimaryAlt": {
+    "message": "Free to use: in the browser it normally does the same as {primary} + click."
+  },
+  "hintAltShift": {
+    "message": "Free to use: in the browser it normally does the same as {shift} + click."
+  },
+  "hintShift": {
+    "message": "Replaces the browser's {shift} + click (open link in a new window)."
+  },
+  "hintAlt": {
+    "message": "Replaces the browser's {alt} + click (download link)."
+  },
+  "hintOff": {
+    "message": "Right-click a link › Open in Layover still works."
+  },
+  "hintAlso": {
+    "message": "Right-click › Open in Layover also works."
+  },
+  "cmdPopTab": {
+    "message": "Open the current tab in a mini window"
+  },
+  "barBack": {
+    "message": "Back"
+  },
+  "barCopy": {
+    "message": "Copy link"
+  },
+  "barCopied": {
+    "message": "Copied"
+  },
+  "optSites": {
+    "message": "Never open in a mini window"
+  },
+  "optSitesHint": {
+    "message": "Links from other apps to these sites open as normal tabs. The shortcut and right-click still work."
+  },
+  "optSitesPlaceholder": {
+    "message": "Add a site, e.g. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Add"
+  },
+  "optSitesEmpty": {
+    "message": "No sites yet"
+  },
+  "optSitesRemove": {
+    "message": "Remove"
+  },
+  "optSitesInvalid": {
+    "message": "Enter a site like zoom.us"
+  },
+  "optAutoClose": {
+    "message": "Close unused mini windows"
+  },
+  "optAutoCloseHint": {
+    "message": "A mini window you haven't looked at for this long closes by itself."
+  },
+  "optNever": {
+    "message": "Never"
+  },
+  "optHours": {
+    "message": "{n} h"
+  },
+  "optShortcutTab": {
+    "message": "Move this tab into a mini window"
+  },
+  "optShortcutTabValue": {
+    "message": "Click the Layover icon in the toolbar"
+  },
+  "menuSearch": {
+    "message": "Search in Layover: “%s”"
+  },
+  "optShortcutSearch": {
+    "message": "Search selected text"
+  },
+  "optShortcutSearchValue": {
+    "message": "Right-click › Search in Layover"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover is free"
+  },
+  "optCoffeeText": {
+    "message": "If it saves you time, a coffee keeps it going."
+  },
+  "optCoffeeButton": {
+    "message": "Buy me a coffee"
+  }
+}

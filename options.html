@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layover</title>
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="icons/icon128.png" alt="" width="56" height="56">
+      <div>
+        <h1 data-i18n="optTitle"></h1>
+        <p class="sub" data-i18n="optSubtitle"></p>
+      </div>
+      <button id="try" class="btn" type="button">▶︎ <span data-i18n="optTry"></span></button>
+    </header>
+
+    <section class="card">
+      <label class="row">
+        <span class="label" data-i18n="optEnabled"></span>
+        <input type="checkbox" id="enabled" class="switch">
+      </label>
+      <label class="row">
+        <span class="label"><span data-i18n="optEffects"></span><small data-i18n="optEffectsHint"></small></span>
+        <input type="checkbox" id="effects" class="switch">
+      </label>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <span class="label" data-i18n="optPosition"></span>
+        <div class="seg" id="barPos" role="radiogroup">
+          <button type="button" role="radio" data-v="top-center" data-i18n="posTopCenter"></button>
+          <button type="button" role="radio" data-v="top-right" data-i18n="posTopRight"></button>
+          <button type="button" role="radio" data-v="bottom-center" data-i18n="posBottomCenter"></button>
+          <button type="button" role="radio" data-v="bottom-right" data-i18n="posBottomRight"></button>
+        </div>
+      </div>
+      <div class="row">
+        <span class="label"><span data-i18n="optSize"></span><small data-i18n="optSizeHint"></small></span>
+        <span class="size"><input type="number" id="width" min="400" max="4000" step="10"> × <input type="number" id="height" min="300" max="3000" step="10"></span>
+      </div>
+      <div class="row col">
+        <div class="rowtop"><span class="label" data-i18n="optAutoClose"></span><div class="seg" id="autoClose" role="radiogroup"></div></div>
+        <small class="hint" data-i18n="optAutoCloseHint"></small>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optSites"></h2>
+      <div class="row col">
+        <small class="hint" data-i18n="optSitesHint"></small>
+        <div class="chips" id="sites"></div>
+        <form class="addsite" id="siteForm" autocomplete="off">
+          <input type="text" id="siteInput" spellcheck="false" maxlength="253">
+          <button type="submit" class="btn small" data-i18n="optSitesAdd"></button>
+        </form>
+        <small class="hint err" id="siteErr" hidden data-i18n="optSitesInvalid"></small>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optShortcuts"></h2>
+      <div class="row col">
+        <div class="rowtop"><span class="label" data-i18n="optLinkShortcut"></span><div class="seg" id="linkShortcut" role="radiogroup"></div></div>
+        <small class="hint" id="linkHint"></small>
+      </div>
+      <div class="row"><span class="label" data-i18n="optShortcutSearch"></span><span class="muted" data-i18n="optShortcutSearchValue"></span></div>
+      <div class="row"><span class="label" data-i18n="optShortcutTab"></span><span class="muted" data-i18n="optShortcutTabValue"></span></div>
+      <div class="row"><span class="label" data-i18n="optShortcutAdd"></span><kbd id="kbdAdd">—</kbd></div>
+      <div class="row"><span class="label" data-i18n="optShortcutClose"></span><kbd id="kbdClose">⌘W</kbd></div>
+      <div class="row"><span class="label" data-i18n="optShortcutMax"></span><span class="muted" data-i18n="optShortcutMaxValue"></span></div>
+      <div class="row end"><button id="shortcuts" class="link" type="button" data-i18n="optChangeShortcut"></button></div>
+    </section>
+
+    <p class="privacy">🔒 <span data-i18n="optPrivacy"></span></p>
+
+    <a class="coffee" href="https://buymeacoffee.com/uygardev" target="_blank" rel="noopener noreferrer">
+      <span class="cup" aria-hidden="true">☕</span>
+      <span><b data-i18n="optCoffeeTitle"></b><small data-i18n="optCoffeeText"></small></span>
+      <span class="go" data-i18n="optCoffeeButton"></span>
+    </a>
+
+    <details id="adv">
+      <summary data-i18n="optDebug"></summary>
+      <label class="row"><span class="label" data-i18n="optDebug"></span><input type="checkbox" id="debug" class="switch"></label>
+      <table><tbody id="log"></tbody></table>
+    </details>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>
