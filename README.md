@@ -1,8 +1,12 @@
 # Layover
 
+<p align="center"><img src="store/promo-tile-440x280.png" width="440" alt="Layover"></p>
+
 **A mini window for links from other apps.**
 
 When you click a link in Mail, Slack, Messages, Notes or any other app, the browser normally drops it into your main window as yet another tab. Layover catches that link and opens it in a small, temporary popup window instead. Read it, then decide: keep it as a tab with one click, or close it and it's gone.
+
+![A link from a chat app opens in a Layover mini window](store/screenshot-1-mini-window.png)
 
 Layover is a Chrome extension (Manifest V3). It also works in other Chromium browsers such as Edge, Brave, Arc and Vivaldi.
 
@@ -18,6 +22,13 @@ Layover is a Chrome extension (Manifest V3). It also works in other Chromium bro
 - **Never-mini list.** Links to some sites (meeting links by default: Zoom, Google Meet, Teams) always open as normal tabs.
 - **Auto-close.** Mini windows you haven't looked at for a while close by themselves. Windows playing sound are left alone.
 - **Light and dark mode**, reduced-motion support, English and Turkish.
+
+| | |
+| --- | --- |
+| ![Open any link in a mini window](store/screenshot-2-open-any-link.png) | ![Search selected text in a mini window](store/screenshot-5-search.png) |
+| Open any link with ⌥⌘ + click or the right-click menu | Search selected text with your default search engine |
+| ![Mini windows stack like a deck of cards](store/screenshot-3-stack.png) | ![Layover settings](store/screenshot-4-settings.png) |
+| Open as many as you like, each one a step lower | Window size, auto-close, never-mini list and shortcuts |
 
 ## How it recognises a link from another app
 
