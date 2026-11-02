@@ -13,15 +13,18 @@ Layover is a Chrome extension (Manifest V3). It also works in other Chromium bro
 ## What it does
 
 - **Links from other apps open in a mini window.** The window appears centred over your main window. Nothing in your tab bar changes.
-- **A small floating bar inside the mini window** gives you four actions: go back, copy the link, add the page to your tabs, or close it.
+- **A small floating bar inside the mini window** gives you four actions: go back, copy the link, add the page to your tabs, or close it. After a few seconds it shrinks to a single button and comes back when you point at it. You can turn that off.
 - **Add to tabs** moves the page into your main window as it is. No reload, so logins, scroll position and form input stay.
 - **Open any link in a mini window** with a modifier + click (⌥⌘ + click on Mac, Ctrl + Alt + click elsewhere) or from the right-click menu.
 - **Search selected text** in a mini window, using the search engine your browser already uses.
 - **Move the current tab into a mini window** by clicking the toolbar icon. Click it again inside a mini window to send the page back.
-- **Keyboard shortcut** for "add to tabs" (Alt + Shift + O by default). Maximizing a mini window also adds it to your tabs.
+- **Keyboard shortcuts** inside a mini window: Alt + Shift + O adds it to your tabs, Alt + Shift + C copies its link, Alt + Shift + W closes it. All three can be changed in `chrome://extensions/shortcuts`. Maximizing a mini window also adds it to your tabs.
+- **Remembers where you put it.** The window size is kept, and during a browser session the next mini window opens where you last moved one. If more than one is open, they stack like cards.
 - **Never-mini list.** Links to some sites (meeting links by default: Zoom, Google Meet, Teams) always open as normal tabs.
 - **Auto-close.** Mini windows you haven't looked at for a while close by themselves. Windows playing sound are left alone.
-- **Light and dark mode**, reduced-motion support, English and Turkish.
+- **Private windows stay private.** A link or tab from a private window opens in a private mini window, and "add to tabs" puts it back in a private window.
+- **Light and dark mode**, reduced-motion support, keyboard-friendly settings.
+- **Seven languages:** English, Turkish, German, Spanish, French, Italian and Brazilian Portuguese.
 
 | | |
 | --- | --- |
@@ -32,7 +35,12 @@ Layover is a Chrome extension (Manifest V3). It also works in other Chromium bro
 
 ## How it recognises a link from another app
 
-When the operating system hands a URL to the browser, the browser opens a new tab whose first navigation has the `AUTO_TOPLEVEL` transition type. Layover watches for that with the `webNavigation` API. Links clicked inside web pages, typed URLs and bookmarks have other transition types, so they are never affected. Tabs restored at browser launch are skipped as well.
+When the operating system hands a URL to the browser, the browser opens a new tab whose first navigation has the `AUTO_TOPLEVEL` transition type. Layover watches for that with the `webNavigation` API. Links clicked inside web pages, typed URLs and bookmarks have other transition types, so they are never affected. Tabs restored at browser launch and the start pages you set in the browser open as usual.
+
+### Known limits
+
+- **A link that starts the browser opens as a normal tab.** When the browser is closed and a link from another app launches it, the tab exists before any extension is running, so Layover never sees it. Links that arrive once the browser is open work as usual, even a second after launch.
+- **Chromium only.** Firefox and Safari report links from other apps differently, so the detection used here does not carry over.
 
 ## Privacy
 
@@ -50,20 +58,48 @@ The extension needs the `webNavigation` permission and access to all sites to do
 
 ### Settings
 
-Right-click the Layover icon in the toolbar and choose **Options**, or open it from `chrome://extensions`. There you can change the window size, the position of the floating bar, the click shortcut, the auto-close delay and the never-mini list, and try it out with a sample link.
+Right-click the Layover icon in the toolbar and choose **Options**, or open it from `chrome://extensions`. There you can change the window size, the position of the floating bar, compact buttons, the click shortcut, the auto-close delay and the never-mini list, and try it out with a sample link.
+
+## Development
+
+No build step and no dependencies. Edit the files, then press the reload button for Layover on `chrome://extensions`.
+
+### Tests
+
+`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 46 scenarios: links from other apps, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
+
+```bash
+npx @puppeteer/browsers install chrome@stable
+```
+
+```bash
+node test/run.js
+```
+
+A test browser window opens on screen for about a minute and a half, with its own temporary profile. Set `CHROME` to use a different browser binary. The copy-link test writes to the clipboard and puts text back afterwards.
+
+### Packaging
+
+```bash
+node scripts/package.js
+```
+
+This builds `dist/layover-<version>.zip` for the Chrome Web Store. It stops with an error if a file referenced by the manifest, the service worker or the settings page is missing, or if a language is missing a string. It also updates the version and size in `store/store-listing.md`.
 
 ## Project layout
 
 | File | Purpose |
 | --- | --- |
 | `manifest.json` | Extension manifest (MV3) |
-| `background.js` | Service worker: link detection, mini windows, context menus, auto-close |
+| `shared.js` | Default settings and helpers shared by the other scripts |
+| `background.js` | Service worker: link detection, mini windows, floating bar, shortcuts, context menus, auto-close |
 | `content.js` | Modifier + click on links, runs on every page |
 | `options.html`, `options.js`, `options.css` | Settings page |
-| `_locales/` | English and Turkish strings |
+| `_locales/` | Strings in seven languages |
 | `icons/` | Extension icons |
-
-No build step, no dependencies.
+| `test/` | End-to-end tests |
+| `scripts/package.js` | Builds the store zip |
+| `store/` | Store listing, privacy policy and images |
 
 ## Support
 
@@ -79,6 +115,6 @@ Layover is free. If it saves you time, you can [buy me a coffee](https://buymeac
 
 Layover, diğer uygulamalardan (Mail, Slack, Mesajlar…) gelen linkleri ana pencerenize sekme olarak atmak yerine küçük, geçici bir pencerede açan bir Chrome eklentisidir. Sayfayı okuyun; işinize yararsa tek tıkla sekmelere ekleyin, yaramazsa kapatın. Her şey cihazınızda çalışır, hiçbir veri toplanmaz veya gönderilmez.
 
-Kurulum için `chrome://extensions` sayfasında **Geliştirici modu**'nu açın ve **Paketlenmemiş öğe yükle** ile proje klasörünü seçin.
+Kurulum için `chrome://extensions` sayfasında **Geliştirici modu**'nu açın ve **Paketlenmemiş öğe yükle** ile proje klasörünü seçin. Eklenti Türkçe dahil yedi dilde gelir. Tarayıcı kapalıyken tıklanan link tarayıcıyı başlattığı için normal sekmede açılır; tarayıcı açıldıktan sonra gelen linkler mini pencereye uğrar.
 
 İşinize yarıyorsa [bir kahve ısmarlayabilirsiniz](https://buymeacoffee.com/uygardev).

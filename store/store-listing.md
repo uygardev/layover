@@ -1,7 +1,7 @@
-# Chrome Web Store listing: Layover 1.4.3
+# Chrome Web Store listing: Layover 1.5.0
 
 ## Package
-- File: `layover-1.4.3.zip` (16 files, about 71 KB uncompressed)
+- File: `layover-1.5.0.zip` (18 files, about 104 KB uncompressed)
 - Item ID: `jdjdgnibdlmogkbaibfdjgpohjjhjinm`
 - Manifest V3. No remote code, no analytics, no network requests.
 
@@ -9,7 +9,7 @@
 
 **Name:** Layover – Mini window for links
 **Category:** Productivity → Workflow & Planning
-**Language:** English (Turkish is also included in `_locales/tr`)
+**Language:** English (the extension also includes Turkish, German, Spanish, French, Italian and Brazilian Portuguese in `_locales/`)
 
 **Short description (from manifest, 113 chars)**
 Links from other apps stop over in a small, temporary window. Keep the page as a tab with one click, or close it.
@@ -19,7 +19,8 @@ Click a link in Mail, Slack, Messages or any other app and it stops over in a sm
 
 • Glance at the page without losing your place
 • "Add to tabs" moves it into your main window as a normal tab. No reload, logins and scroll position stay.
-• "×" or ⌘W closes it
+• "×", ⌘W or ⌥⇧W / Alt+Shift+W closes it
+• ⌥⇧C / Alt+Shift+C copies the page's link
 • ⌥⌘ + click any link (Ctrl + Alt + click on Windows). Pick another shortcut or turn it off in the settings.
 • Right-click any link › Open in Layover
 • Select text, right-click › Search in Layover: results from your own default search engine open in a mini window
@@ -31,7 +32,9 @@ Click a link in Mail, Slack, Messages or any other app and it stops over in a sm
 • Maximizing the mini window also adds it to your tabs
 • Shortcut: ⌥⇧O / Alt+Shift+O (changeable)
 • Choose where the buttons sit: top, top right, bottom or bottom right
-• The window size is remembered
+• The buttons shrink to a single one after a few seconds and come back when you point at them (you can turn this off)
+• The window size is remembered, and so is the spot you last moved a mini window to
+• Available in English, Turkish, German, Spanish, French, Italian and Brazilian Portuguese
 • Links you click inside web pages, typed addresses and bookmarks open as usual. Only links coming from other apps, and links you open with the shortcut or the right-click menu, open in a mini window.
 
 Private by design: Layover runs entirely on your device. It doesn't collect, store or send your browsing data. There are no accounts, no analytics and no network requests.
@@ -43,7 +46,8 @@ Mail, Slack, Mesajlar ya da başka bir uygulamada bir linke tıkladığında say
 
 • Sayfaya hızlıca göz at, kaldığın yeri kaybetme
 • "Sekmelere ekle" sayfayı ana pencereye normal bir sekme olarak taşır. Sayfa yeniden yüklenmez, oturumlar ve kaydırma konumu korunur.
-• "×" veya ⌘W ile kapat
+• "×", ⌘W ya da ⌥⇧W / Alt+Shift+W ile kapat
+• ⌥⇧C / Alt+Shift+C sayfanın linkini kopyalar
 • Herhangi bir linke ⌥⌘ + tık (Windows'ta Ctrl + Alt + tık). Ayarlardan başka bir kısayol seçebilir ya da kapatabilirsin.
 • Herhangi bir linke sağ tık › Layover ile aç
 • Metni seç, sağ tık › Layover ile ara: sonuçlar kendi varsayılan arama motorunla mini pencerede açılır
@@ -55,7 +59,9 @@ Mail, Slack, Mesajlar ya da başka bir uygulamada bir linke tıkladığında say
 • Mini pencereyi büyütmek de sayfayı sekmelere ekler
 • Kısayol: ⌥⇧O / Alt+Shift+O (değiştirilebilir)
 • Butonların konumunu seç: üst, sağ üst, alt ya da sağ alt
-• Pencere boyutu hatırlanır
+• Butonlar birkaç saniye sonra tek bir butona küçülür, üzerine gelince geri açılır (kapatılabilir)
+• Pencere boyutu ve mini pencereyi en son taşıdığın yer hatırlanır
+• Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, İtalyanca ve Brezilya Portekizcesi
 • Web sayfalarının içinde tıkladığın linkler, yazdığın adresler ve yer imleri her zamanki gibi açılır. Sadece diğer uygulamalardan gelen linkler ve kısayolla ya da sağ tık menüsüyle açtığın linkler mini pencerede açılır.
 
 Gizlilik önceliklidir: Layover tamamen cihazında çalışır. Gezinme verilerini toplamaz, saklamaz ve hiçbir yere göndermez. Hesap, analiz ya da ağ isteği yoktur.
@@ -76,11 +82,11 @@ Open links in a small temporary window (links that come from other apps, or any 
 | Permission | Why it's needed |
 |---|---|
 | `webNavigation` | To recognise links handed to the browser by other apps. The extension only checks the navigation transition type of newly created tabs ("start_page"/auto_toplevel). Nothing is stored or sent. |
-| `scripting` | To add the floating buttons (Back, Copy link, Add to tabs, Close) to the page shown in a mini window, and to fade that page out when the mini window closes. Right after install or update, it also adds the small click-shortcut script (content.js, packaged with the extension) to tabs that were already open, so the shortcut works without reloading them. |
+| `scripting` | To add the floating buttons (Back, Copy link, Add to tabs, Close) to the page shown in a mini window, to fade that page out when the mini window closes, and to copy the page's address when the user presses the copy-link shortcut. Right after install or update, it also adds the small click-shortcut scripts (shared.js and content.js, packaged with the extension) to tabs that were already open, so the shortcut works without reloading them. |
 | Host permission `<all_urls>` | Links can point to any website, so the buttons must be shown on whatever page opens in the mini window. A small content script on all sites listens only for clicks on links made while the chosen keys (default ⌥⌘) are held, so the shortcut works everywhere. The extension doesn't read or change page content. |
 | `search` | To run "Search in Layover" with the search engine the user has set as default in the browser. The selected text is searched only when the user picks this menu item. |
 | `alarms` | To check every few minutes for mini windows that haven't been used for the chosen time and close them. |
-| `storage` | To save the user's settings on the device (on/off, animations, button position, window size, click shortcut, auto-close time and the list of sites that never open in a mini window) and to remember which windows are mini windows during the browser session. |
+| `storage` | To save the user's settings on the device (on/off, animations, button position, compact buttons, window size, click shortcut, auto-close time and the list of sites that never open in a mini window), and to remember during the browser session which windows are mini windows and where the last one was moved. |
 | `contextMenus` | To add "Open in Layover" for links, "Search in Layover" for selected text, and "Add to tabs" inside mini windows to the right-click menu. |
 
 **Remote code:** No, I am not using remote code.
