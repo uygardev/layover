@@ -190,8 +190,36 @@ chrome.webNavigation.onCommitted.addListener(async (d) => {
 
   debugLog({ host: hostOf(d.url), transition: d.transitionType,
     action: go ? 'mini' : (inGrace ? 'skip:startup' : (blocked ? 'skip:site rule' : 'skip')) });
-  if (go) await openMini({ tabId: d.tabId }, cand.windowId, settings);
+  if (!go) return;
+  const prev = await stateBeforeActivation(cand.windowId);
+  const tabId = await openMini({ tabId: d.tabId }, cand.windowId, settings);
+  if (tabId != null && prev === 'minimized') await reMinimize(cand.windowId, tabId);
 });
+
+const ACTIVATION_WINDOW_MS = 4000;
+let bgSnapTimer = null;
+
+async function snapshotBackground() {
+  const all = await chrome.windows.getAll({ windowTypes: ['normal'] }).catch(() => []);
+  const states = {};
+  for (const w of all) states[w.id] = w.state;
+  await chrome.storage.session.set({ bgSnap: { at: Date.now(), states } });
+}
+
+async function stateBeforeActivation(windowId) {
+  const { bgSnap, fgAt = 0 } = await chrome.storage.session.get(['bgSnap', 'fgAt']);
+  if (!bgSnap) return null;
+  const justActivated = fgAt < bgSnap.at || Date.now() - fgAt < ACTIVATION_WINDOW_MS;
+  return justActivated ? bgSnap.states[windowId] || null : null;
+}
+
+async function reMinimize(windowId, miniTabId) {
+  const tab = await chrome.tabs.get(miniTabId).catch(() => null);
+  const main = await chrome.windows.get(windowId).catch(() => null);
+  if (!tab || !main || main.state === 'minimized') return;
+  await chrome.windows.update(windowId, { state: 'minimized' }).catch(() => {});
+  await chrome.windows.update(tab.windowId, { focused: true }).catch(() => {});
+}
 
 async function openMini(source, sourceWindowId, settings) {
   const { width, height } = settings;
@@ -541,7 +569,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 });
 
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
-  if (windowId === chrome.windows.WINDOW_ID_NONE) return;
+  clearTimeout(bgSnapTimer);
+  if (windowId === chrome.windows.WINDOW_ID_NONE) {
+    bgSnapTimer = setTimeout(snapshotBackground, 300);
+    return;
+  }
+  chrome.storage.session.get(['bgSnap', 'fgAt']).then(({ bgSnap, fgAt = 0 }) => {
+    if (bgSnap && bgSnap.at > fgAt) chrome.storage.session.set({ fgAt: Date.now() });
+  });
   const mini = await isMini(windowId);
   setAddToTabsMenu(mini);
   if (mini) setMini(windowId, true);
