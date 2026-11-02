@@ -293,15 +293,16 @@ async function moveToMain(miniWindowId) {
   setAddToTabsMenu(false);
   const miniWin = await chrome.windows.get(miniWindowId).catch(() => null);
   const main = await mainWindowFor(miniWin);
+  const incognito = !!(miniWin && miniWin.incognito);
   if (!main) {
-    await chrome.windows.create({ tabId: tab.id, type: 'normal', focused: true }).catch(() => {});
+    await chrome.windows.create({ tabId: tab.id, type: 'normal', focused: true, incognito }).catch(() => {});
     return;
   }
   try {
     await chrome.tabs.move(tab.id, { windowId: main.id, index: -1 });
   } catch {
     try {
-      await chrome.windows.create({ tabId: tab.id, type: 'normal', focused: false });
+      await chrome.windows.create({ tabId: tab.id, type: 'normal', focused: false, incognito });
       await chrome.tabs.move(tab.id, { windowId: main.id, index: -1 });
     } catch {
       if (tab.url) await chrome.tabs.create({ windowId: main.id, url: tab.url, active: true });
