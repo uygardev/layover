@@ -1,7 +1,8 @@
-# Chrome Web Store listing: Layover 1.2.1
+# Chrome Web Store listing: Layover 1.4.3
 
 ## Package
-- File: `layover-1.2.1.zip` (16 files, about 55 KB uncompressed)
+- File: `layover-1.4.3.zip` (16 files, about 71 KB uncompressed)
+- Item ID: `jdjdgnibdlmogkbaibfdjgpohjjhjinm`
 - Manifest V3. No remote code, no analytics, no network requests.
 
 ## Store listing tab
@@ -75,11 +76,11 @@ Open links in a small temporary window (links that come from other apps, or any 
 | Permission | Why it's needed |
 |---|---|
 | `webNavigation` | To recognise links handed to the browser by other apps. The extension only checks the navigation transition type of newly created tabs ("start_page"/auto_toplevel). Nothing is stored or sent. |
-| `scripting` | To add the two floating buttons (Add to tabs, Close) to the page shown in a mini window. It is used only in mini windows. |
+| `scripting` | To add the floating buttons (Back, Copy link, Add to tabs, Close) to the page shown in a mini window, and to fade that page out when the mini window closes. Right after install or update, it also adds the small click-shortcut script (content.js, packaged with the extension) to tabs that were already open, so the shortcut works without reloading them. |
 | Host permission `<all_urls>` | Links can point to any website, so the buttons must be shown on whatever page opens in the mini window. A small content script on all sites listens only for clicks on links made while the chosen keys (default ⌥⌘) are held, so the shortcut works everywhere. The extension doesn't read or change page content. |
 | `search` | To run "Search in Layover" with the search engine the user has set as default in the browser. The selected text is searched only when the user picks this menu item. |
 | `alarms` | To check every few minutes for mini windows that haven't been used for the chosen time and close them. |
-| `storage` | To save the user's settings (on/off, animations, button position, window size). |
+| `storage` | To save the user's settings on the device (on/off, animations, button position, window size, click shortcut, auto-close time and the list of sites that never open in a mini window) and to remember which windows are mini windows during the browser session. |
 | `contextMenus` | To add "Open in Layover" for links, "Search in Layover" for selected text, and "Add to tabs" inside mini windows to the right-click menu. |
 
 **Remote code:** No, I am not using remote code.
@@ -89,11 +90,12 @@ Open links in a small temporary window (links that come from other apps, or any 
 - not used or transferred for purposes unrelated to the item's single purpose
 - not used or transferred to determine creditworthiness or for lending
 
-**Privacy policy URL:** host `privacy-policy.md` somewhere public (for example GitHub Pages or a published Google Doc) and paste the link.
+**Privacy policy URL:** https://github.com/uygardev/layover/blob/main/store/privacy-policy.md
 
 ## Support link
 - In both descriptions (above) and on the extension's settings page: https://buymeacoffee.com/uygardev
-- Developer dashboard › Store listing › Support URL: better for a help page or email (for example mailto:me@uygar.dev).
+- Homepage URL: https://github.com/uygardev/layover
+- Support URL: https://github.com/uygardev/layover/issues
 
 ## Distribution
 - Visibility: Public (or Unlisted for a soft launch)
