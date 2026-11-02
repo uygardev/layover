@@ -1,5 +1,6 @@
 'use strict';
 const fs = require('fs');
+const http = require('http');
 const { execSync } = require('child_process');
 const L = require('./cdp.js');
 const { sleep, check, results } = L;
@@ -86,6 +87,7 @@ async function externalLinks(sw) {
 
   let nodes = await barNodes(pg);
   check('bar has back, copy, add and close buttons', nodes && nodes.buttons.length === 4, JSON.stringify(nodes));
+  await pg.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 550, y: 500 });
   await sleep(3200);
   nodes = await barNodes(pg);
   check('compact bar shrinks after a few seconds', nodes && /\bidle\b/.test(nodes.bar), JSON.stringify(nodes && nodes.bar));
@@ -217,6 +219,99 @@ async function lifecycle(sw, main) {
   check('link while the main window is minimized: main window stays minimized', all.find((w) => w.id === main.id).state === 'minimized', layout(all));
   await sw.eval(`chrome.windows.update(${main.id}, { state: 'normal', focused: true })`);
   await closePopups(sw);
+}
+
+function startServer() {
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      if (req.url.startsWith('/redirect')) { res.writeHead(302, { location: 'http://127.0.0.1:8765/fast' }); res.end(); return; }
+      const delay = req.url.startsWith('/slow') ? 1200 : 0;
+      setTimeout(() => { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<title>layover test</title><p>ok</p>'); }, delay);
+    });
+    server.listen(8765, () => resolve(server));
+  });
+}
+
+async function waitForPopup(sw, ms) {
+  const t0 = Date.now();
+  while (Date.now() - t0 < ms) {
+    const p = (await popups(sw))[0];
+    if (p) return { popup: p, at: Date.now() - t0 };
+    await sleep(25);
+  }
+  return { popup: null, at: ms };
+}
+
+async function earlyPop(sw, main) {
+  console.log('\n— pop out before the page loads');
+  const server = await startServer();
+  const inactive = () => sw.eval(`setActivity({ inactive: true, at: Date.now() })`);
+  const lastLog = async () => (await sw.eval(`chrome.storage.local.get('log').then((r) => r.log || [])`))[0] || {};
+  const reset = async () => {
+    await sw.eval(`chrome.windows.update(${main.id}, { state: 'normal' })`);
+    await closePopups(sw);
+    for (const t of (await sw.eval(`chrome.tabs.query({ windowId: ${main.id} })`)).slice(1)) await sw.call(`chrome.tabs.remove(${t.id})`);
+    await sleep(600);
+  };
+  try {
+    await reset();
+    await inactive();
+    const t0 = Date.now();
+    L.sendUrl('http://127.0.0.1:8765/slow-background');
+    let r = await waitForPopup(sw, 3000);
+    const opened = Date.now() - t0;
+    check('Chrome in the background: mini window opens before the page has loaded', !!r.popup && opened < 1000, `${opened} ms after the link was sent, server answers after 1200 ms`);
+    await sleep(2000);
+    let all = await wins(sw);
+    check('Chrome in the background: the page finishes loading in the mini window', all.some((w) => w.type === 'popup' && w.tabs.some((t) => urlOf(t).includes('/slow-background'))) && all.find((w) => w.id === main.id).tabs.length === 1, layout(all));
+    check('Chrome in the background: the commit confirms the early pop-out', (await lastLog()).action === 'mini:confirmed', JSON.stringify(await lastLog()));
+    const pg = await L.page((x) => x.url.includes('/slow-background'));
+    check('the bar is added once the early-popped page loads', (await pg.eval(`!!document.getElementById('layover-bar')`)) === true);
+    pg.close();
+
+    await reset();
+    await sw.eval(`chrome.windows.update(${main.id}, { state: 'minimized' })`);
+    await sleep(1200);
+    const t1 = Date.now();
+    L.sendUrl('http://127.0.0.1:8765/slow-minimized');
+    r = await waitForPopup(sw, 3000);
+    const opened2 = Date.now() - t1;
+    await sleep(2200);
+    all = await wins(sw);
+    check('main window minimized: mini window opens before the page has loaded', !!r.popup && opened2 < 1200, `${opened2} ms`);
+    check('main window minimized: it is minimized again', all.find((w) => w.id === main.id).state === 'minimized', layout(all));
+
+    await reset();
+    await inactive();
+    await sw.eval(`chrome.tabs.create({ windowId: ${main.id}, url: 'http://127.0.0.1:8765/slow-extension', active: true })`);
+    r = await waitForPopup(sw, 1500);
+    await sleep(2200);
+    all = await wins(sw);
+    check('a tab opened by another extension while Chrome is in the background is moved back', !!r.popup && !all.some((w) => w.type === 'popup') && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).includes('/slow-extension')), layout(all));
+    check('…and the log says it was undone', (await lastLog()).action === 'mini:undone', JSON.stringify(await lastLog()));
+
+    await reset();
+    await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', '127.0.0.1'] })`);
+    await sleep(300);
+    await inactive();
+    L.sendUrl('http://localhost:8765/redirect');
+    await sleep(2500);
+    all = await wins(sw);
+    check('a link that redirects to a never-mini site ends up as a normal tab', !all.some((w) => w.type === 'popup') && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).startsWith('http://127.0.0.1:8765/fast')), layout(all));
+    await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'] })`);
+
+    await reset();
+    await sw.eval(`setActivity({ inactive: false, at: 0 })`);
+    L.sendUrl('http://127.0.0.1:8765/slow-active');
+    await sleep(800);
+    const before = (await popups(sw)).length;
+    await sleep(1800);
+    all = await wins(sw);
+    check('Chrome in front: the link waits for the page and still opens in a mini window', before === 0 && all.some((w) => w.type === 'popup' && w.tabs.some((t) => urlOf(t).includes('/slow-active'))), `popups after 800 ms: ${before}; ${layout(all)}`);
+    await reset();
+  } finally {
+    server.close();
+  }
 }
 
 async function settingsPage(sw) {
@@ -356,6 +451,7 @@ async function incognito() {
   await placement(sw, main);
   await clicks(sw, main);
   await lifecycle(sw, main);
+  await earlyPop(sw, main);
   await settingsPage(sw);
   sw.close();
   await startup();

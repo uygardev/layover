@@ -142,20 +142,72 @@ chrome.action.onClicked.addListener(async (tab) => {
 });
 
 const candidates = new Map();
+const earlyDecisions = new Map();
+const EARLY_AFTER_ACTIVATION_MS = 1000;
 
 chrome.tabs.onCreated.addListener((tab) => {
   const now = Date.now();
-  for (const [id, c] of candidates) if (now - c.at > CANDIDATE_TTL_MS) candidates.delete(id);
+  for (const [id, c] of candidates) if (now - c.at > CANDIDATE_TTL_MS) { candidates.delete(id); earlyDecisions.delete(id); }
   candidates.set(tab.id, { at: now, windowId: tab.windowId });
+  const url = tab.pendingUrl || tab.url || '';
+  if (/^https?:/i.test(url) && tab.openerTabId == null && tab.active) earlyDecisions.set(tab.id, popEarly(tab, url, now).catch(() => false));
 });
-chrome.tabs.onRemoved.addListener((tabId) => { candidates.delete(tabId); fadePending.delete(tabId); });
+chrome.tabs.onRemoved.addListener((tabId) => { candidates.delete(tabId); earlyDecisions.delete(tabId); fadePending.delete(tabId); });
 chrome.tabs.onReplaced.addListener((added, removed) => {
   const c = candidates.get(removed);
   if (c) { candidates.delete(removed); candidates.set(added, c); }
+  const e = earlyDecisions.get(removed);
+  if (e) { earlyDecisions.delete(removed); earlyDecisions.set(added, e); }
 });
+
+let activityCache = null;
+async function getActivity() {
+  if (!activityCache) activityCache = (await chrome.storage.session.get('activity')).activity || { inactive: false, at: 0 };
+  return activityCache;
+}
+function setActivity(a) {
+  activityCache = a;
+  chrome.storage.session.set({ activity: a });
+}
+
+async function popEarly(tab, url, createdAt) {
+  const activity = await getActivity();
+  if (!activity.inactive && createdAt - activity.at > EARLY_AFTER_ACTIVATION_MS) return false;
+  const settings = await getSettings();
+  if (!settings.enabled || isNeverMini(url, settings.neverMini)) return false;
+  const { startupAt = 0 } = await chrome.storage.session.get('startupAt');
+  if (createdAt - startupAt < STARTUP_GRACE_MS) return false;
+  const win = await chrome.windows.get(tab.windowId).catch(() => null);
+  if (!win || win.type !== 'normal' || !candidates.has(tab.id)) return false;
+  const prev = await stateBeforeActivation(tab.windowId);
+  const tabId = await openMini({ tabId: tab.id }, tab.windowId, settings, { deferBar: true });
+  if (tabId == null) return false;
+  debugLog({ host: hostOf(url), transition: 'created', action: 'mini:early' });
+  if (prev === 'minimized') await reMinimize(tab.windowId, tabId);
+  return true;
+}
+
+async function settleEarly(d) {
+  const settings = await getSettings();
+  const external = d.transitionType === 'start_page' || d.transitionType === 'auto_toplevel';
+  const keep = external && /^https?:/i.test(d.url) && !isNeverMini(d.url, settings.neverMini);
+  debugLog({ host: hostOf(d.url), transition: d.transitionType, action: keep ? 'mini:confirmed' : 'mini:undone' });
+  if (keep) return;
+  const tab = await chrome.tabs.get(d.tabId).catch(() => null);
+  if (tab && (await isMini(tab.windowId))) await moveToMain(tab.windowId);
+}
 
 chrome.webNavigation.onCommitted.addListener(async (d) => {
   if (d.frameId !== 0) return;
+  const early = earlyDecisions.get(d.tabId);
+  if (early) {
+    earlyDecisions.delete(d.tabId);
+    if (await early) {
+      candidates.delete(d.tabId);
+      await settleEarly(d);
+      return;
+    }
+  }
   const cand = candidates.get(d.tabId);
   if (!cand) return;
   candidates.delete(d.tabId);
@@ -204,7 +256,7 @@ async function reMinimize(windowId, miniTabId) {
   await chrome.windows.update(tab.windowId, { focused: true }).catch(() => {});
 }
 
-async function openMini(source, sourceWindowId, settings) {
+async function openMini(source, sourceWindowId, settings, opts = {}) {
   const { width, height } = settings;
   const geo = { type: 'popup', focused: true, width, height };
   let src = await chrome.windows.get(sourceWindowId).catch(() => null);
@@ -229,7 +281,7 @@ async function openMini(source, sourceWindowId, settings) {
   setAddToTabsMenu(true);
   const tabId = source.tabId ?? (win.tabs && win.tabs[0] && win.tabs[0].id);
   if (tabId != null && settings.effects) fadePending.add(tabId);
-  if (tabId != null) injectBar(tabId);
+  if (tabId != null && !opts.deferBar) injectBar(tabId);
   return tabId;
 }
 
@@ -627,9 +679,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
   clearTimeout(bgSnapTimer);
   if (windowId === chrome.windows.WINDOW_ID_NONE) {
+    setActivity({ inactive: true, at: Date.now() });
     bgSnapTimer = setTimeout(snapshotBackground, 300);
     return;
   }
+  getActivity().then((a) => { if (a.inactive) setActivity({ inactive: false, at: Date.now() }); });
   chrome.storage.session.get(['bgSnap', 'fgAt']).then(({ bgSnap, fgAt = 0 }) => {
     if (bgSnap && bgSnap.at > fgAt) chrome.storage.session.set({ fgAt: Date.now() });
   });

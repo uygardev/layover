@@ -1,7 +1,7 @@
-# Chrome Web Store listing: Layover 1.5.0
+# Chrome Web Store listing: Layover 1.5.1
 
 ## Package
-- File: `layover-1.5.0.zip` (18 files, about 104 KB uncompressed)
+- File: `layover-1.5.1.zip` (18 files, about 106 KB uncompressed)
 - Item ID: `jdjdgnibdlmogkbaibfdjgpohjjhjinm`
 - Manifest V3. No remote code, no analytics, no network requests.
 

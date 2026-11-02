@@ -37,9 +37,12 @@ Layover is a Chrome extension (Manifest V3). It also works in other Chromium bro
 
 When the operating system hands a URL to the browser, the browser opens a new tab whose first navigation has the `AUTO_TOPLEVEL` transition type. Layover watches for that with the `webNavigation` API. Links clicked inside web pages, typed URLs and bookmarks have other transition types, so they are never affected. Tabs restored at browser launch and the start pages you set in the browser open as usual.
 
+The transition type is only known once the page starts loading, which can take a second on a slow site. To keep the main window from showing in the meantime, Layover acts as soon as the tab appears when the browser was in the background or was just brought forward: a new active tab with a web address and no opener goes straight into a mini window. When the page then reports its transition type, Layover checks it again. If the tab turns out not to come from another app, or it was redirected to a never-mini site, it is moved back to the main window.
+
 ### Known limits
 
 - **A link that starts the browser opens as a normal tab.** When the browser is closed and a link from another app launches it, the tab exists before any extension is running, so Layover never sees it. Links that arrive once the browser is open work as usual, even a second after launch.
+- **A minimized main window still flashes briefly.** When a link arrives, Chrome itself restores the minimized main window first, and extensions cannot run until that animation ends. Layover opens the mini window right after and minimizes the main window again.
 - **Chromium only.** Firefox and Safari report links from other apps differently, so the detection used here does not carry over.
 
 ## Privacy
@@ -66,7 +69,7 @@ No build step and no dependencies. Edit the files, then press the reload button 
 
 ### Tests
 
-`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 46 scenarios: links from other apps, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
+`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 56 scenarios: links from other apps, early pop-out and its undo, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
 
 ```bash
 npx @puppeteer/browsers install chrome@stable
