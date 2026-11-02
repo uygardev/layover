@@ -40,6 +40,7 @@ h2 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: upp
 
 .size input { width: 74px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg);
   color: var(--text); font: inherit; text-align: center; }
+.kbds { display: inline-flex; gap: 6px; }
 kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 3px 8px; border-radius: 6px; background: var(--seg); }
 .btn { all: unset; cursor: pointer; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; font-size: 13px; white-space: nowrap; }
 .btn:hover { filter: brightness(1.08); }

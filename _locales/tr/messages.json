@@ -190,5 +190,23 @@
   },
   "optCoffeeButton": {
     "message": "Bir kahve ısmarla"
+  },
+  "optCompact": {
+    "message": "Kompakt butonlar"
+  },
+  "optCompactHint": {
+    "message": "Birkaç saniye sonra butonlar tek bir butona küçülür. Hepsini görmek için üzerine gel."
+  },
+  "optShortcutCopy": {
+    "message": "Linki kopyala"
+  },
+  "optAdvanced": {
+    "message": "Gelişmiş"
+  },
+  "cmdCopyLink": {
+    "message": "Mini pencerenin linkini kopyala"
+  },
+  "cmdClose": {
+    "message": "Mini pencereyi kapat"
   }
 }

@@ -1,27 +1,14 @@
 'use strict';
+importScripts('shared.js');
 
-const DEFAULTS = Object.freeze({
-  enabled: true,
-  width: 1100,
-  height: 780,
-  barPos: 'top-center',
-  effects: true,
-  linkShortcut: 'primary+alt',
-  neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'],
-  autoCloseHours: 6,
-  debug: false,
-});
-const AUTO_CLOSE_OPTIONS = [0, 1, 6, 12, 24];
+const { DEFAULTS, AUTO_CLOSE_OPTIONS, POSITIONS, SHORTCUTS, MIN_W, MIN_H, MAX_W, MAX_H, cleanHost } = LAYOVER;
 const ALARM = 'layover-autoclose';
-const POSITIONS = ['top-center', 'top-right', 'bottom-center', 'bottom-right'];
-const SHORTCUTS = ['primary+alt', 'alt+shift', 'shift', 'alt', 'off'];
-const STARTUP_GRACE_MS = 8000;
+const STARTUP_GRACE_MS = 1000;
 const CANDIDATE_TTL_MS = 15000;
 const MENU_ID = 'layover-add-to-tabs';
 const LINK_MENU_ID = 'layover-open-link';
 const SEARCH_MENU_ID = 'layover-search';
 const BAR_ID = 'layover-bar';
-const MIN_W = 400, MIN_H = 300, MAX_W = 4000, MAX_H = 3000;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = (key) => chrome.i18n.getMessage(key);
@@ -38,17 +25,13 @@ function sanitize(s) {
     width: num(s.width, MIN_W, MAX_W, DEFAULTS.width),
     height: num(s.height, MIN_H, MAX_H, DEFAULTS.height),
     barPos: POSITIONS.includes(s.barPos) ? s.barPos : DEFAULTS.barPos,
+    barCompact: s.barCompact !== false,
     effects: s.effects !== false,
     linkShortcut: SHORTCUTS.includes(s.linkShortcut) ? s.linkShortcut : DEFAULTS.linkShortcut,
     neverMini: Array.isArray(s.neverMini) ? s.neverMini.map(cleanHost).filter(Boolean).slice(0, 200) : [...DEFAULTS.neverMini],
     autoCloseHours: AUTO_CLOSE_OPTIONS.includes(+s.autoCloseHours) ? +s.autoCloseHours : DEFAULTS.autoCloseHours,
     debug: s.debug === true,
   };
-}
-function cleanHost(v) {
-  let h = String(v || '').trim().toLowerCase();
-  h = h.replace(/^[a-z]+:\/\//, '').split(/[/?#]/)[0].replace(/^\*\./, '').replace(/^www\./, '').replace(/:\d+$/, '');
-  return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(h) ? h : '';
 }
 function isNeverMini(url, list) {
   const host = hostOf(url).replace(/:\d+$/, '').replace(/^www\./, '');
@@ -103,9 +86,10 @@ chrome.runtime.onInstalled.addListener(async () => {
     title: t('menuSearch'),
     contexts: ['selection'],
   });
+  ensureAlarm();
   const open = await chrome.tabs.query({ url: ['http://*/*', 'https://*/*'] }).catch(() => []);
   for (const tab of open) {
-    chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, files: ['content.js'] }).catch(() => {});
+    chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, files: ['shared.js', 'content.js'] }).catch(() => {});
   }
 });
 
@@ -115,7 +99,6 @@ chrome.runtime.onStartup.addListener(() => {
   setAddToTabsMenu(false);
   ensureAlarm();
 });
-chrome.runtime.onInstalled.addListener(() => ensureAlarm());
 
 function ensureAlarm() {
   chrome.alarms.get(ALARM).then((a) => { if (!a) chrome.alarms.create(ALARM, { periodInMinutes: 10 }); }).catch(() => {});
@@ -235,6 +218,9 @@ async function openMini(source, sourceWindowId, settings) {
       const left = last.left + DECK_STEP, top = last.top + DECK_STEP;
       const fits = left + width <= src.left + src.width + DECK_STEP * 4 && top + height <= src.top + src.height + DECK_STEP * 4;
       if (fits) { geo.left = left; geo.top = top; }
+    } else {
+      const { lastPos } = await chrome.storage.session.get('lastPos');
+      if (lastPos && centreInside(lastPos.left, lastPos.top, width, height, src)) { geo.left = lastPos.left; geo.top = lastPos.top; }
     }
   }
   const win = await chrome.windows.create({ ...source, ...geo }).catch(() => null);
@@ -245,6 +231,11 @@ async function openMini(source, sourceWindowId, settings) {
   if (tabId != null && settings.effects) fadePending.add(tabId);
   if (tabId != null) injectBar(tabId);
   return tabId;
+}
+
+function centreInside(left, top, width, height, win) {
+  const x = left + width / 2, y = top + height / 2;
+  return x >= win.left && x <= win.left + win.width && y >= win.top && y <= win.top + win.height;
 }
 
 const isWebUrl = (u) => typeof u === 'string' && /^https?:\/\//i.test(u);
@@ -341,7 +332,7 @@ async function moveToMain(miniWindowId) {
   await chrome.windows.update(main.id, { focused: true }).catch(() => {});
 }
 
-function layoverBar(barId, pos, text, effects) {
+function layoverBar(barId, pos, text, effects, compact) {
   if (window.top !== window || document.getElementById(barId)) return;
   const place = {
     'top-center': { top: '10px', left: '50%', transform: 'translateX(-50%)' },
@@ -352,8 +343,12 @@ function layoverBar(barId, pos, text, effects) {
 
   const host = document.createElement('div');
   host.id = barId;
-  host.style.setProperty('all', 'initial');
-  Object.assign(host.style, { position: 'fixed', zIndex: '2147483647', ...place });
+  const hostStyle = {
+    all: 'initial', position: 'fixed', 'z-index': '2147483647', display: 'block', visibility: 'visible',
+    opacity: '1', 'pointer-events': 'auto', top: 'auto', right: 'auto', bottom: 'auto', left: 'auto',
+    transform: 'none', filter: 'none', 'clip-path': 'none', ...place,
+  };
+  for (const [k, v] of Object.entries(hostStyle)) host.style.setProperty(k, v, 'important');
   const root = host.attachShadow({ mode: 'closed' });
 
   const css = `
@@ -378,6 +373,9 @@ function layoverBar(barId, pos, text, effects) {
     .icon:hover{color:#1d1d1f}
     .icon:disabled{opacity:.35;cursor:default;background:none}
     .done{color:#30b94d!important}
+    .bar.idle{opacity:.6}
+    .bar.idle .icon,.bar.idle .txt{display:none}
+    .bar.idle .primary{width:28px;padding:0;justify-content:center}
     svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
     @media (prefers-color-scheme:dark){
       .bar{color:#f5f5f7;background:rgba(44,44,46,.78);
@@ -415,7 +413,12 @@ function layoverBar(barId, pos, text, effects) {
     b.title = title;
     b.setAttribute('aria-label', label);
     b.appendChild(icon(paths));
-    if (showLabel) b.appendChild(document.createTextNode(label));
+    if (showLabel) {
+      const span = document.createElement('span');
+      span.className = 'txt';
+      span.textContent = label;
+      b.appendChild(span);
+    }
     return b;
   };
 
@@ -453,15 +456,36 @@ function layoverBar(barId, pos, text, effects) {
       return ok;
     } catch { return false; }
   };
+  let idleTimer;
+  const idleSoon = (ms) => {
+    if (!compact) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (!bar.matches(':hover') && !bar.matches(':focus-within')) bar.classList.add('idle');
+    }, ms);
+  };
+  const wake = () => { clearTimeout(idleTimer); bar.classList.remove('idle'); };
+  if (compact) {
+    bar.addEventListener('pointerenter', wake);
+    bar.addEventListener('pointerleave', () => idleSoon(1200));
+    bar.addEventListener('focusin', wake);
+    bar.addEventListener('focusout', () => idleSoon(1200));
+    idleSoon(2500);
+  }
+
   let copyTimer;
-  copy.addEventListener('click', async (e) => {
-    e.preventDefault(); e.stopPropagation();
-    if (!e.isTrusted || !(await copyText(location.href))) return;
+  const flashCopied = () => {
     copy.replaceChildren(icon(['M20 6 9 17l-5-5']));
     copy.classList.add('done'); copy.title = text.copied;
     clearTimeout(copyTimer);
     copyTimer = setTimeout(() => { copy.replaceChildren(icon(COPY)); copy.classList.remove('done'); copy.title = text.copy; }, 1400);
+  };
+  copy.addEventListener('click', async (e) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!e.isTrusted || !(await copyText(location.href))) return;
+    flashCopied();
   });
+  window.__layoverCopied = () => { wake(); flashCopied(); idleSoon(1800); };
 
   const send = (action) => (e) => {
     e.preventDefault();
@@ -485,9 +509,38 @@ function layoverBar(barId, pos, text, effects) {
   obs.observe(document.documentElement, { childList: true });
   window.__layoverCleanup = () => {
     obs.disconnect();
+    clearTimeout(idleTimer);
+    window.__layoverCopied = null;
     if (nav && nav.removeEventListener) nav.removeEventListener('currententrychange', refreshBack);
     host.remove();
   };
+}
+
+function layoverCopyLink() {
+  const href = location.href;
+  const done = () => {
+    if (typeof window.__layoverCopied === 'function') window.__layoverCopied();
+    return true;
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = href;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.documentElement.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok ? done() : false;
+  };
+  return navigator.clipboard.writeText(href).then(done, fallback);
+}
+
+async function copyLink(windowId) {
+  const [tab] = await chrome.tabs.query({ windowId }).catch(() => []);
+  if (!tab) return false;
+  const [r] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: layoverCopyLink }).catch(() => []);
+  return !!(r && r.result);
 }
 
 function layoverRemoveBar(barId) {
@@ -500,7 +553,7 @@ async function injectBar(tabId) {
   const s = await getSettings();
   const text = { add: t('barAdd'), addTitle: t('barAddTitle'), close: t('barClose'),
     back: t('barBack'), copy: t('barCopy'), copied: t('barCopied') };
-  chrome.scripting.executeScript({ target: { tabId }, func: layoverBar, args: [BAR_ID, s.barPos, text, s.effects] })
+  chrome.scripting.executeScript({ target: { tabId }, func: layoverBar, args: [BAR_ID, s.barPos, text, s.effects, s.barCompact] })
     .then(() => {
       if (!fadePending.has(tabId)) return;
       fadePending.delete(tabId);
@@ -545,11 +598,14 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
   })();
 });
 
-chrome.commands.onCommand.addListener(async (command, tab) => {
-  if (command !== 'open-in-main') return;
+async function runCommand(command, tab) {
   const winId = tab ? tab.windowId : (await chrome.windows.getLastFocused().catch(() => ({}))).id;
-  if (await isMini(winId)) await moveToMain(winId);
-});
+  if (!(await isMini(winId))) return;
+  if (command === 'open-in-main') await moveToMain(winId);
+  else if (command === 'close-mini') await closeMini(winId);
+  else if (command === 'copy-link') await copyLink(winId);
+}
+chrome.commands.onCommand.addListener(runCommand);
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === SEARCH_MENU_ID) {
@@ -582,13 +638,15 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
   if (mini) setMini(windowId, true);
 });
 
-let saveTimer = null;
+let saveTimer = null, posTimer = null;
 chrome.windows.onBoundsChanged.addListener(async (win) => {
   if (sliding.has(win.id) || !(await isMini(win.id))) return;
   const w = await chrome.windows.get(win.id).catch(() => null);
   if (!w) return;
   if (w.state === 'maximized' || w.state === 'fullscreen') return moveToMain(win.id);
   if (w.state !== 'normal') return;
+  clearTimeout(posTimer);
+  posTimer = setTimeout(() => { chrome.storage.session.set({ lastPos: { left: w.left, top: w.top } }); }, 400);
   const next = {
     width: Math.min(MAX_W, Math.max(MIN_W, w.width)),
     height: Math.min(MAX_H, Math.max(MIN_H, w.height)),

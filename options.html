@@ -38,9 +38,13 @@
           <button type="button" role="radio" data-v="bottom-right" data-i18n="posBottomRight"></button>
         </div>
       </div>
+      <label class="row">
+        <span class="label"><span data-i18n="optCompact"></span><small data-i18n="optCompactHint"></small></span>
+        <input type="checkbox" id="barCompact" class="switch">
+      </label>
       <div class="row">
         <span class="label"><span data-i18n="optSize"></span><small data-i18n="optSizeHint"></small></span>
-        <span class="size"><input type="number" id="width" min="400" max="4000" step="10"> × <input type="number" id="height" min="300" max="3000" step="10"></span>
+        <span class="size"><input type="number" id="width" step="10"> × <input type="number" id="height" step="10"></span>
       </div>
       <div class="row col">
         <div class="rowtop"><span class="label" data-i18n="optAutoClose"></span><div class="seg" id="autoClose" role="radiogroup"></div></div>
@@ -70,7 +74,8 @@
       <div class="row"><span class="label" data-i18n="optShortcutSearch"></span><span class="muted" data-i18n="optShortcutSearchValue"></span></div>
       <div class="row"><span class="label" data-i18n="optShortcutTab"></span><span class="muted" data-i18n="optShortcutTabValue"></span></div>
       <div class="row"><span class="label" data-i18n="optShortcutAdd"></span><kbd id="kbdAdd">—</kbd></div>
-      <div class="row"><span class="label" data-i18n="optShortcutClose"></span><kbd id="kbdClose">⌘W</kbd></div>
+      <div class="row"><span class="label" data-i18n="optShortcutCopy"></span><kbd id="kbdCopy">—</kbd></div>
+      <div class="row"><span class="label" data-i18n="optShortcutClose"></span><span class="kbds"><kbd id="kbdClose" hidden></kbd><kbd id="kbdCloseWin">⌘W</kbd></span></div>
       <div class="row"><span class="label" data-i18n="optShortcutMax"></span><span class="muted" data-i18n="optShortcutMaxValue"></span></div>
       <div class="row end"><button id="shortcuts" class="link" type="button" data-i18n="optChangeShortcut"></button></div>
     </section>
@@ -84,12 +89,13 @@
     </a>
 
     <details id="adv">
-      <summary data-i18n="optDebug"></summary>
+      <summary data-i18n="optAdvanced"></summary>
       <label class="row"><span class="label" data-i18n="optDebug"></span><input type="checkbox" id="debug" class="switch"></label>
       <table><tbody id="log"></tbody></table>
     </details>
     <div id="toast" role="status" aria-live="polite"></div>
   </main>
+  <script src="shared.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

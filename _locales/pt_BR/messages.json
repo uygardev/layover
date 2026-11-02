@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Layover – Minijanela para links"
+  },
+  "extDescription": {
+    "message": "Links de outros apps fazem escala em uma janela pequena e temporária. Mantenha a página como guia com um clique ou feche-a."
+  },
+  "actionTitle": {
+    "message": "Layover: abrir esta guia em uma minijanela"
+  },
+  "cmdOpenInMain": {
+    "message": "Mover a página da minijanela para a janela principal como guia"
+  },
+  "menuOpenInMain": {
+    "message": "Adicionar às guias"
+  },
+  "menuOpenLink": {
+    "message": "Abrir no Layover"
+  },
+  "barAdd": {
+    "message": "Adicionar às guias"
+  },
+  "barAddTitle": {
+    "message": "Abrir esta página como guia na janela principal"
+  },
+  "barClose": {
+    "message": "Fechar"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Links de outros apps (Mail, Slack, Mensagens…) fazem escala primeiro em uma minijanela."
+  },
+  "optTry": {
+    "message": "Experimentar"
+  },
+  "optEnabled": {
+    "message": "Abrir links de outros apps em uma minijanela"
+  },
+  "optEffects": {
+    "message": "Animações"
+  },
+  "optEffectsHint": {
+    "message": "A página aparece e desaparece suavemente, os botões deslizam para dentro e a janela desliza ao fechar."
+  },
+  "optPosition": {
+    "message": "Posição dos botões"
+  },
+  "posTopCenter": {
+    "message": "Em cima"
+  },
+  "posTopRight": {
+    "message": "Em cima à direita"
+  },
+  "posBottomCenter": {
+    "message": "Embaixo"
+  },
+  "posBottomRight": {
+    "message": "Embaixo à direita"
+  },
+  "optSize": {
+    "message": "Tamanho da janela"
+  },
+  "optSizeHint": {
+    "message": "Redimensionar uma minijanela manualmente também atualiza este valor."
+  },
+  "optShortcuts": {
+    "message": "Atalhos"
+  },
+  "optShortcutAdd": {
+    "message": "Adicionar às guias"
+  },
+  "optShortcutClose": {
+    "message": "Fechar"
+  },
+  "optShortcutMax": {
+    "message": "Maximizar a janela"
+  },
+  "optShortcutMaxValue": {
+    "message": "Adiciona às guias"
+  },
+  "optChangeShortcut": {
+    "message": "Alterar atalho"
+  },
+  "optPrivacy": {
+    "message": "Tudo funciona no seu dispositivo. O Layover não coleta, armazena nem envia seus dados de navegação."
+  },
+  "optDebug": {
+    "message": "Registro de diagnóstico (fica neste dispositivo)"
+  },
+  "optLogEmpty": {
+    "message": "Nenhum registro ainda"
+  },
+  "optSaved": {
+    "message": "Salvo"
+  },
+  "optLinkShortcut": {
+    "message": "Abrir um link em uma minijanela"
+  },
+  "optClick": {
+    "message": "clique"
+  },
+  "optOff": {
+    "message": "Desativado"
+  },
+  "hintPrimaryAlt": {
+    "message": "Livre: no navegador normalmente faz o mesmo que {primary} + clique."
+  },
+  "hintAltShift": {
+    "message": "Livre: no navegador normalmente faz o mesmo que {shift} + clique."
+  },
+  "hintShift": {
+    "message": "Substitui {shift} + clique do navegador (abrir o link em uma nova janela)."
+  },
+  "hintAlt": {
+    "message": "Substitui {alt} + clique do navegador (baixar o link)."
+  },
+  "hintOff": {
+    "message": "Clique direito em um link › Abrir no Layover continua funcionando."
+  },
+  "hintAlso": {
+    "message": "Clique direito › Abrir no Layover também funciona."
+  },
+  "cmdPopTab": {
+    "message": "Abrir a guia atual em uma minijanela"
+  },
+  "barBack": {
+    "message": "Voltar"
+  },
+  "barCopy": {
+    "message": "Copiar link"
+  },
+  "barCopied": {
+    "message": "Copiado"
+  },
+  "optSites": {
+    "message": "Nunca abrir em uma minijanela"
+  },
+  "optSitesHint": {
+    "message": "Links de outros apps para estes sites abrem como guias normais. O atalho e o clique direito continuam funcionando."
+  },
+  "optSitesPlaceholder": {
+    "message": "Adicione um site, ex.: zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Adicionar"
+  },
+  "optSitesEmpty": {
+    "message": "Nenhum site ainda"
+  },
+  "optSitesRemove": {
+    "message": "Remover"
+  },
+  "optSitesInvalid": {
+    "message": "Digite um site como zoom.us"
+  },
+  "optAutoClose": {
+    "message": "Fechar minijanelas sem uso"
+  },
+  "optAutoCloseHint": {
+    "message": "Uma minijanela que você não olha há esse tempo fecha sozinha."
+  },
+  "optNever": {
+    "message": "Nunca"
+  },
+  "optHours": {
+    "message": "{n} h"
+  },
+  "optShortcutTab": {
+    "message": "Mover esta guia para uma minijanela"
+  },
+  "optShortcutTabValue": {
+    "message": "Clique no ícone do Layover na barra de ferramentas"
+  },
+  "menuSearch": {
+    "message": "Pesquisar no Layover: “%s”"
+  },
+  "optShortcutSearch": {
+    "message": "Pesquisar o texto selecionado"
+  },
+  "optShortcutSearchValue": {
+    "message": "Clique direito › Pesquisar no Layover"
+  },
+  "optCoffeeTitle": {
+    "message": "O Layover é gratuito"
+  },
+  "optCoffeeText": {
+    "message": "Se ele economiza seu tempo, um café ajuda a mantê-lo."
+  },
+  "optCoffeeButton": {
+    "message": "Me pague um café"
+  },
+  "optCompact": {
+    "message": "Botões compactos"
+  },
+  "optCompactHint": {
+    "message": "Depois de alguns segundos os botões encolhem para um só. Passe o ponteiro por cima para ver todos."
+  },
+  "optShortcutCopy": {
+    "message": "Copiar link"
+  },
+  "optAdvanced": {
+    "message": "Avançado"
+  },
+  "cmdCopyLink": {
+    "message": "Copiar o link da minijanela"
+  },
+  "cmdClose": {
+    "message": "Fechar a minijanela"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Layover – Mini-fenêtre pour les liens"
+  },
+  "extDescription": {
+    "message": "Les liens venant d'autres apps font escale dans une petite fenêtre temporaire. Gardez la page en onglet d'un clic, ou fermez-la."
+  },
+  "actionTitle": {
+    "message": "Layover : ouvrir cet onglet dans une mini-fenêtre"
+  },
+  "cmdOpenInMain": {
+    "message": "Déplacer la page de la mini-fenêtre vers la fenêtre principale, en onglet"
+  },
+  "menuOpenInMain": {
+    "message": "Ajouter aux onglets"
+  },
+  "menuOpenLink": {
+    "message": "Ouvrir dans Layover"
+  },
+  "barAdd": {
+    "message": "Ajouter aux onglets"
+  },
+  "barAddTitle": {
+    "message": "Ouvrir cette page en onglet dans la fenêtre principale"
+  },
+  "barClose": {
+    "message": "Fermer"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Les liens venant d'autres apps (Mail, Slack, Messages…) font d'abord escale dans une mini-fenêtre."
+  },
+  "optTry": {
+    "message": "Essayer"
+  },
+  "optEnabled": {
+    "message": "Ouvrir les liens d'autres apps dans une mini-fenêtre"
+  },
+  "optEffects": {
+    "message": "Animations"
+  },
+  "optEffectsHint": {
+    "message": "La page apparaît et disparaît en fondu, les boutons glissent, la fenêtre glisse en se fermant."
+  },
+  "optPosition": {
+    "message": "Position des boutons"
+  },
+  "posTopCenter": {
+    "message": "Haut"
+  },
+  "posTopRight": {
+    "message": "En haut à droite"
+  },
+  "posBottomCenter": {
+    "message": "Bas"
+  },
+  "posBottomRight": {
+    "message": "En bas à droite"
+  },
+  "optSize": {
+    "message": "Taille de la fenêtre"
+  },
+  "optSizeHint": {
+    "message": "Redimensionner une mini-fenêtre à la main met aussi à jour cette valeur."
+  },
+  "optShortcuts": {
+    "message": "Raccourcis"
+  },
+  "optShortcutAdd": {
+    "message": "Ajouter aux onglets"
+  },
+  "optShortcutClose": {
+    "message": "Fermer"
+  },
+  "optShortcutMax": {
+    "message": "Agrandir la fenêtre"
+  },
+  "optShortcutMaxValue": {
+    "message": "L'ajoute aux onglets"
+  },
+  "optChangeShortcut": {
+    "message": "Modifier le raccourci"
+  },
+  "optPrivacy": {
+    "message": "Tout fonctionne sur votre appareil. Layover ne collecte, ne stocke et n'envoie aucune donnée de navigation."
+  },
+  "optDebug": {
+    "message": "Journal de diagnostic (reste sur cet appareil)"
+  },
+  "optLogEmpty": {
+    "message": "Aucune entrée pour l'instant"
+  },
+  "optSaved": {
+    "message": "Enregistré"
+  },
+  "optLinkShortcut": {
+    "message": "Ouvrir un lien dans une mini-fenêtre"
+  },
+  "optClick": {
+    "message": "clic"
+  },
+  "optOff": {
+    "message": "Désactivé"
+  },
+  "hintPrimaryAlt": {
+    "message": "Libre : dans le navigateur, il fait normalement la même chose que {primary} + clic."
+  },
+  "hintAltShift": {
+    "message": "Libre : dans le navigateur, il fait normalement la même chose que {shift} + clic."
+  },
+  "hintShift": {
+    "message": "Remplace {shift} + clic du navigateur (ouvrir le lien dans une nouvelle fenêtre)."
+  },
+  "hintAlt": {
+    "message": "Remplace {alt} + clic du navigateur (télécharger le lien)."
+  },
+  "hintOff": {
+    "message": "Clic droit sur un lien › Ouvrir dans Layover fonctionne toujours."
+  },
+  "hintAlso": {
+    "message": "Clic droit › Ouvrir dans Layover fonctionne aussi."
+  },
+  "cmdPopTab": {
+    "message": "Ouvrir l'onglet actuel dans une mini-fenêtre"
+  },
+  "barBack": {
+    "message": "Retour"
+  },
+  "barCopy": {
+    "message": "Copier le lien"
+  },
+  "barCopied": {
+    "message": "Copié"
+  },
+  "optSites": {
+    "message": "Ne jamais ouvrir dans une mini-fenêtre"
+  },
+  "optSitesHint": {
+    "message": "Les liens d'autres apps vers ces sites s'ouvrent en onglets normaux. Le raccourci et le clic droit fonctionnent toujours."
+  },
+  "optSitesPlaceholder": {
+    "message": "Ajouter un site, par ex. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Ajouter"
+  },
+  "optSitesEmpty": {
+    "message": "Aucun site pour l'instant"
+  },
+  "optSitesRemove": {
+    "message": "Retirer"
+  },
+  "optSitesInvalid": {
+    "message": "Saisissez un site comme zoom.us"
+  },
+  "optAutoClose": {
+    "message": "Fermer les mini-fenêtres inutilisées"
+  },
+  "optAutoCloseHint": {
+    "message": "Une mini-fenêtre que vous n'avez pas regardée pendant cette durée se ferme toute seule."
+  },
+  "optNever": {
+    "message": "Jamais"
+  },
+  "optHours": {
+    "message": "{n} h"
+  },
+  "optShortcutTab": {
+    "message": "Déplacer cet onglet dans une mini-fenêtre"
+  },
+  "optShortcutTabValue": {
+    "message": "Cliquez sur l'icône Layover dans la barre d'outils"
+  },
+  "menuSearch": {
+    "message": "Rechercher dans Layover : « %s »"
+  },
+  "optShortcutSearch": {
+    "message": "Rechercher le texte sélectionné"
+  },
+  "optShortcutSearchValue": {
+    "message": "Clic droit › Rechercher dans Layover"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover est gratuit"
+  },
+  "optCoffeeText": {
+    "message": "S'il vous fait gagner du temps, un café l'aide à continuer."
+  },
+  "optCoffeeButton": {
+    "message": "Offrez-moi un café"
+  },
+  "optCompact": {
+    "message": "Boutons compacts"
+  },
+  "optCompactHint": {
+    "message": "Après quelques secondes, les boutons se réduisent à un seul. Survolez-le pour tous les voir."
+  },
+  "optShortcutCopy": {
+    "message": "Copier le lien"
+  },
+  "optAdvanced": {
+    "message": "Avancé"
+  },
+  "cmdCopyLink": {
+    "message": "Copier le lien de la mini-fenêtre"
+  },
+  "cmdClose": {
+    "message": "Fermer la mini-fenêtre"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Layover – Minifinestra per i link"
+  },
+  "extDescription": {
+    "message": "I link dalle altre app fanno scalo in una piccola finestra temporanea. Tieni la pagina come scheda con un clic, oppure chiudila."
+  },
+  "actionTitle": {
+    "message": "Layover: apri questa scheda in una minifinestra"
+  },
+  "cmdOpenInMain": {
+    "message": "Sposta la pagina della minifinestra nella finestra principale come scheda"
+  },
+  "menuOpenInMain": {
+    "message": "Aggiungi alle schede"
+  },
+  "menuOpenLink": {
+    "message": "Apri in Layover"
+  },
+  "barAdd": {
+    "message": "Aggiungi alle schede"
+  },
+  "barAddTitle": {
+    "message": "Apri questa pagina come scheda nella finestra principale"
+  },
+  "barClose": {
+    "message": "Chiudi"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "I link dalle altre app (Mail, Slack, Messaggi…) fanno prima scalo in una minifinestra."
+  },
+  "optTry": {
+    "message": "Prova"
+  },
+  "optEnabled": {
+    "message": "Apri i link dalle altre app in una minifinestra"
+  },
+  "optEffects": {
+    "message": "Animazioni"
+  },
+  "optEffectsHint": {
+    "message": "La pagina appare e scompare in dissolvenza, i pulsanti scorrono dentro, la finestra scivola via quando si chiude."
+  },
+  "optPosition": {
+    "message": "Posizione dei pulsanti"
+  },
+  "posTopCenter": {
+    "message": "In alto"
+  },
+  "posTopRight": {
+    "message": "In alto a destra"
+  },
+  "posBottomCenter": {
+    "message": "In basso"
+  },
+  "posBottomRight": {
+    "message": "In basso a destra"
+  },
+  "optSize": {
+    "message": "Dimensioni della finestra"
+  },
+  "optSizeHint": {
+    "message": "Ridimensionare a mano una minifinestra aggiorna anche questo valore."
+  },
+  "optShortcuts": {
+    "message": "Scorciatoie"
+  },
+  "optShortcutAdd": {
+    "message": "Aggiungi alle schede"
+  },
+  "optShortcutClose": {
+    "message": "Chiudi"
+  },
+  "optShortcutMax": {
+    "message": "Ingrandisci la finestra"
+  },
+  "optShortcutMaxValue": {
+    "message": "La aggiunge alle schede"
+  },
+  "optChangeShortcut": {
+    "message": "Cambia scorciatoia"
+  },
+  "optPrivacy": {
+    "message": "Tutto funziona sul tuo dispositivo. Layover non raccoglie, salva né invia i tuoi dati di navigazione."
+  },
+  "optDebug": {
+    "message": "Registro diagnostico (resta su questo dispositivo)"
+  },
+  "optLogEmpty": {
+    "message": "Ancora nessuna voce"
+  },
+  "optSaved": {
+    "message": "Salvato"
+  },
+  "optLinkShortcut": {
+    "message": "Apri un link in una minifinestra"
+  },
+  "optClick": {
+    "message": "clic"
+  },
+  "optOff": {
+    "message": "Disattivato"
+  },
+  "hintPrimaryAlt": {
+    "message": "Libero: nel browser di solito fa lo stesso di {primary} + clic."
+  },
+  "hintAltShift": {
+    "message": "Libero: nel browser di solito fa lo stesso di {shift} + clic."
+  },
+  "hintShift": {
+    "message": "Sostituisce {shift} + clic del browser (apri il link in una nuova finestra)."
+  },
+  "hintAlt": {
+    "message": "Sostituisce {alt} + clic del browser (scarica il link)."
+  },
+  "hintOff": {
+    "message": "Clic destro su un link › Apri in Layover funziona comunque."
+  },
+  "hintAlso": {
+    "message": "Anche clic destro › Apri in Layover funziona."
+  },
+  "cmdPopTab": {
+    "message": "Apri la scheda corrente in una minifinestra"
+  },
+  "barBack": {
+    "message": "Indietro"
+  },
+  "barCopy": {
+    "message": "Copia link"
+  },
+  "barCopied": {
+    "message": "Copiato"
+  },
+  "optSites": {
+    "message": "Non aprire mai in una minifinestra"
+  },
+  "optSitesHint": {
+    "message": "I link dalle altre app verso questi siti si aprono come schede normali. La scorciatoia e il clic destro funzionano comunque."
+  },
+  "optSitesPlaceholder": {
+    "message": "Aggiungi un sito, ad es. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Aggiungi"
+  },
+  "optSitesEmpty": {
+    "message": "Ancora nessun sito"
+  },
+  "optSitesRemove": {
+    "message": "Rimuovi"
+  },
+  "optSitesInvalid": {
+    "message": "Inserisci un sito come zoom.us"
+  },
+  "optAutoClose": {
+    "message": "Chiudi le minifinestre inutilizzate"
+  },
+  "optAutoCloseHint": {
+    "message": "Una minifinestra che non guardi da questo tempo si chiude da sola."
+  },
+  "optNever": {
+    "message": "Mai"
+  },
+  "optHours": {
+    "message": "{n} h"
+  },
+  "optShortcutTab": {
+    "message": "Sposta questa scheda in una minifinestra"
+  },
+  "optShortcutTabValue": {
+    "message": "Fai clic sull'icona di Layover nella barra degli strumenti"
+  },
+  "menuSearch": {
+    "message": "Cerca in Layover: «%s»"
+  },
+  "optShortcutSearch": {
+    "message": "Cerca il testo selezionato"
+  },
+  "optShortcutSearchValue": {
+    "message": "Clic destro › Cerca in Layover"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover è gratuito"
+  },
+  "optCoffeeText": {
+    "message": "Se ti fa risparmiare tempo, un caffè lo aiuta ad andare avanti."
+  },
+  "optCoffeeButton": {
+    "message": "Offrimi un caffè"
+  },
+  "optCompact": {
+    "message": "Pulsanti compatti"
+  },
+  "optCompactHint": {
+    "message": "Dopo qualche secondo i pulsanti si riducono a uno solo. Passaci sopra per vederli tutti."
+  },
+  "optShortcutCopy": {
+    "message": "Copia link"
+  },
+  "optAdvanced": {
+    "message": "Avanzate"
+  },
+  "cmdCopyLink": {
+    "message": "Copia il link della minifinestra"
+  },
+  "cmdClose": {
+    "message": "Chiudi la minifinestra"
+  }
+}

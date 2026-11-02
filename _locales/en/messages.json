@@ -190,5 +190,23 @@
   },
   "optCoffeeButton": {
     "message": "Buy me a coffee"
+  },
+  "optCompact": {
+    "message": "Compact buttons"
+  },
+  "optCompactHint": {
+    "message": "After a few seconds the buttons shrink to a single one. Point at it to see them all."
+  },
+  "optShortcutCopy": {
+    "message": "Copy link"
+  },
+  "optAdvanced": {
+    "message": "Advanced"
+  },
+  "cmdCopyLink": {
+    "message": "Copy the mini window's link"
+  },
+  "cmdClose": {
+    "message": "Close the mini window"
   }
 }

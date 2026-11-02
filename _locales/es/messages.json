@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Layover – Miniventana para enlaces"
+  },
+  "extDescription": {
+    "message": "Los enlaces de otras apps hacen escala en una ventana pequeña y temporal. Guarda la página como pestaña con un clic o ciérrala."
+  },
+  "actionTitle": {
+    "message": "Layover: abrir esta pestaña en una miniventana"
+  },
+  "cmdOpenInMain": {
+    "message": "Mover la página de la miniventana a la ventana principal como pestaña"
+  },
+  "menuOpenInMain": {
+    "message": "Añadir a pestañas"
+  },
+  "menuOpenLink": {
+    "message": "Abrir en Layover"
+  },
+  "barAdd": {
+    "message": "Añadir a pestañas"
+  },
+  "barAddTitle": {
+    "message": "Abrir esta página como pestaña en la ventana principal"
+  },
+  "barClose": {
+    "message": "Cerrar"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Los enlaces de otras apps (Mail, Slack, Mensajes…) hacen escala primero en una miniventana."
+  },
+  "optTry": {
+    "message": "Probar"
+  },
+  "optEnabled": {
+    "message": "Abrir los enlaces de otras apps en una miniventana"
+  },
+  "optEffects": {
+    "message": "Animaciones"
+  },
+  "optEffectsHint": {
+    "message": "La página aparece y desaparece suavemente, los botones entran deslizándose y la ventana se desliza al cerrarse."
+  },
+  "optPosition": {
+    "message": "Posición de los botones"
+  },
+  "posTopCenter": {
+    "message": "Arriba"
+  },
+  "posTopRight": {
+    "message": "Arriba a la derecha"
+  },
+  "posBottomCenter": {
+    "message": "Abajo"
+  },
+  "posBottomRight": {
+    "message": "Abajo a la derecha"
+  },
+  "optSize": {
+    "message": "Tamaño de la ventana"
+  },
+  "optSizeHint": {
+    "message": "Si cambias el tamaño de una miniventana a mano, también se actualiza aquí."
+  },
+  "optShortcuts": {
+    "message": "Atajos"
+  },
+  "optShortcutAdd": {
+    "message": "Añadir a pestañas"
+  },
+  "optShortcutClose": {
+    "message": "Cerrar"
+  },
+  "optShortcutMax": {
+    "message": "Maximizar la ventana"
+  },
+  "optShortcutMaxValue": {
+    "message": "La añade a las pestañas"
+  },
+  "optChangeShortcut": {
+    "message": "Cambiar atajo"
+  },
+  "optPrivacy": {
+    "message": "Todo funciona en tu dispositivo. Layover no recopila, guarda ni envía tus datos de navegación."
+  },
+  "optDebug": {
+    "message": "Registro de diagnóstico (se queda en este dispositivo)"
+  },
+  "optLogEmpty": {
+    "message": "Todavía no hay entradas"
+  },
+  "optSaved": {
+    "message": "Guardado"
+  },
+  "optLinkShortcut": {
+    "message": "Abrir un enlace en una miniventana"
+  },
+  "optClick": {
+    "message": "clic"
+  },
+  "optOff": {
+    "message": "Desactivado"
+  },
+  "hintPrimaryAlt": {
+    "message": "Libre: en el navegador normalmente hace lo mismo que {primary} + clic."
+  },
+  "hintAltShift": {
+    "message": "Libre: en el navegador normalmente hace lo mismo que {shift} + clic."
+  },
+  "hintShift": {
+    "message": "Sustituye {shift} + clic del navegador (abrir el enlace en una ventana nueva)."
+  },
+  "hintAlt": {
+    "message": "Sustituye {alt} + clic del navegador (descargar el enlace)."
+  },
+  "hintOff": {
+    "message": "Clic derecho en un enlace › Abrir en Layover sigue funcionando."
+  },
+  "hintAlso": {
+    "message": "Clic derecho › Abrir en Layover también funciona."
+  },
+  "cmdPopTab": {
+    "message": "Abrir la pestaña actual en una miniventana"
+  },
+  "barBack": {
+    "message": "Atrás"
+  },
+  "barCopy": {
+    "message": "Copiar enlace"
+  },
+  "barCopied": {
+    "message": "Copiado"
+  },
+  "optSites": {
+    "message": "No abrir nunca en una miniventana"
+  },
+  "optSitesHint": {
+    "message": "Los enlaces de otras apps a estos sitios se abren como pestañas normales. El atajo y el clic derecho siguen funcionando."
+  },
+  "optSitesPlaceholder": {
+    "message": "Añade un sitio, p. ej. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Añadir"
+  },
+  "optSitesEmpty": {
+    "message": "Todavía no hay sitios"
+  },
+  "optSitesRemove": {
+    "message": "Quitar"
+  },
+  "optSitesInvalid": {
+    "message": "Escribe un sitio como zoom.us"
+  },
+  "optAutoClose": {
+    "message": "Cerrar miniventanas sin usar"
+  },
+  "optAutoCloseHint": {
+    "message": "Una miniventana que no has mirado durante este tiempo se cierra sola."
+  },
+  "optNever": {
+    "message": "Nunca"
+  },
+  "optHours": {
+    "message": "{n} h"
+  },
+  "optShortcutTab": {
+    "message": "Mover esta pestaña a una miniventana"
+  },
+  "optShortcutTabValue": {
+    "message": "Haz clic en el icono de Layover en la barra de herramientas"
+  },
+  "menuSearch": {
+    "message": "Buscar en Layover: «%s»"
+  },
+  "optShortcutSearch": {
+    "message": "Buscar el texto seleccionado"
+  },
+  "optShortcutSearchValue": {
+    "message": "Clic derecho › Buscar en Layover"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover es gratis"
+  },
+  "optCoffeeText": {
+    "message": "Si te ahorra tiempo, un café ayuda a mantenerlo."
+  },
+  "optCoffeeButton": {
+    "message": "Invítame a un café"
+  },
+  "optCompact": {
+    "message": "Botones compactos"
+  },
+  "optCompactHint": {
+    "message": "Tras unos segundos los botones se reducen a uno. Pasa el puntero por encima para verlos todos."
+  },
+  "optShortcutCopy": {
+    "message": "Copiar enlace"
+  },
+  "optAdvanced": {
+    "message": "Avanzado"
+  },
+  "cmdCopyLink": {
+    "message": "Copiar el enlace de la miniventana"
+  },
+  "cmdClose": {
+    "message": "Cerrar la miniventana"
+  }
+}

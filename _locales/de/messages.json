@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Layover – Mini-Fenster für Links"
+  },
+  "extDescription": {
+    "message": "Links aus anderen Apps landen zuerst in einem kleinen, temporären Fenster. Behalte die Seite mit einem Klick als Tab oder schließe sie."
+  },
+  "actionTitle": {
+    "message": "Layover: diesen Tab in einem Mini-Fenster öffnen"
+  },
+  "cmdOpenInMain": {
+    "message": "Seite aus dem Mini-Fenster als Tab ins Hauptfenster verschieben"
+  },
+  "menuOpenInMain": {
+    "message": "Zu Tabs hinzufügen"
+  },
+  "menuOpenLink": {
+    "message": "In Layover öffnen"
+  },
+  "barAdd": {
+    "message": "Zu Tabs hinzufügen"
+  },
+  "barAddTitle": {
+    "message": "Diese Seite als Tab im Hauptfenster öffnen"
+  },
+  "barClose": {
+    "message": "Schließen"
+  },
+  "optTitle": {
+    "message": "Layover"
+  },
+  "optSubtitle": {
+    "message": "Links aus anderen Apps (Mail, Slack, Nachrichten …) landen zuerst in einem Mini-Fenster."
+  },
+  "optTry": {
+    "message": "Ausprobieren"
+  },
+  "optEnabled": {
+    "message": "Links aus anderen Apps in einem Mini-Fenster öffnen"
+  },
+  "optEffects": {
+    "message": "Animationen"
+  },
+  "optEffectsHint": {
+    "message": "Die Seite blendet ein und aus, die Buttons gleiten herein, das Fenster gleitet beim Schließen weg."
+  },
+  "optPosition": {
+    "message": "Position der Buttons"
+  },
+  "posTopCenter": {
+    "message": "Oben"
+  },
+  "posTopRight": {
+    "message": "Oben rechts"
+  },
+  "posBottomCenter": {
+    "message": "Unten"
+  },
+  "posBottomRight": {
+    "message": "Unten rechts"
+  },
+  "optSize": {
+    "message": "Fenstergröße"
+  },
+  "optSizeHint": {
+    "message": "Wenn du die Größe eines Mini-Fensters von Hand änderst, wird sie hier übernommen."
+  },
+  "optShortcuts": {
+    "message": "Tastenkürzel"
+  },
+  "optShortcutAdd": {
+    "message": "Zu Tabs hinzufügen"
+  },
+  "optShortcutClose": {
+    "message": "Schließen"
+  },
+  "optShortcutMax": {
+    "message": "Fenster maximieren"
+  },
+  "optShortcutMaxValue": {
+    "message": "Fügt es zu den Tabs hinzu"
+  },
+  "optChangeShortcut": {
+    "message": "Tastenkürzel ändern"
+  },
+  "optPrivacy": {
+    "message": "Alles läuft auf deinem Gerät. Layover sammelt, speichert und sendet keine Browserdaten."
+  },
+  "optDebug": {
+    "message": "Diagnoseprotokoll (bleibt auf diesem Gerät)"
+  },
+  "optLogEmpty": {
+    "message": "Noch keine Einträge"
+  },
+  "optSaved": {
+    "message": "Gespeichert"
+  },
+  "optLinkShortcut": {
+    "message": "Link in einem Mini-Fenster öffnen"
+  },
+  "optClick": {
+    "message": "Klick"
+  },
+  "optOff": {
+    "message": "Aus"
+  },
+  "hintPrimaryAlt": {
+    "message": "Frei verwendbar: im Browser bewirkt es normalerweise dasselbe wie {primary} + Klick."
+  },
+  "hintAltShift": {
+    "message": "Frei verwendbar: im Browser bewirkt es normalerweise dasselbe wie {shift} + Klick."
+  },
+  "hintShift": {
+    "message": "Ersetzt {shift} + Klick des Browsers (Link in neuem Fenster öffnen)."
+  },
+  "hintAlt": {
+    "message": "Ersetzt {alt} + Klick des Browsers (Link herunterladen)."
+  },
+  "hintOff": {
+    "message": "Rechtsklick auf einen Link › In Layover öffnen funktioniert weiterhin."
+  },
+  "hintAlso": {
+    "message": "Rechtsklick › In Layover öffnen funktioniert ebenfalls."
+  },
+  "cmdPopTab": {
+    "message": "Aktuellen Tab in einem Mini-Fenster öffnen"
+  },
+  "barBack": {
+    "message": "Zurück"
+  },
+  "barCopy": {
+    "message": "Link kopieren"
+  },
+  "barCopied": {
+    "message": "Kopiert"
+  },
+  "optSites": {
+    "message": "Nie im Mini-Fenster öffnen"
+  },
+  "optSitesHint": {
+    "message": "Links aus anderen Apps zu diesen Websites öffnen sich als normale Tabs. Tastenkürzel und Rechtsklick funktionieren weiterhin."
+  },
+  "optSitesPlaceholder": {
+    "message": "Website hinzufügen, z. B. zoom.us"
+  },
+  "optSitesAdd": {
+    "message": "Hinzufügen"
+  },
+  "optSitesEmpty": {
+    "message": "Noch keine Websites"
+  },
+  "optSitesRemove": {
+    "message": "Entfernen"
+  },
+  "optSitesInvalid": {
+    "message": "Gib eine Website wie zoom.us ein"
+  },
+  "optAutoClose": {
+    "message": "Unbenutzte Mini-Fenster schließen"
+  },
+  "optAutoCloseHint": {
+    "message": "Ein Mini-Fenster, das du so lange nicht angesehen hast, schließt sich von selbst."
+  },
+  "optNever": {
+    "message": "Nie"
+  },
+  "optHours": {
+    "message": "{n} Std."
+  },
+  "optShortcutTab": {
+    "message": "Diesen Tab in ein Mini-Fenster verschieben"
+  },
+  "optShortcutTabValue": {
+    "message": "Auf das Layover-Symbol in der Symbolleiste klicken"
+  },
+  "menuSearch": {
+    "message": "In Layover suchen: „%s“"
+  },
+  "optShortcutSearch": {
+    "message": "Markierten Text suchen"
+  },
+  "optShortcutSearchValue": {
+    "message": "Rechtsklick › In Layover suchen"
+  },
+  "optCoffeeTitle": {
+    "message": "Layover ist kostenlos"
+  },
+  "optCoffeeText": {
+    "message": "Wenn es dir Zeit spart, hält ein Kaffee es am Laufen."
+  },
+  "optCoffeeButton": {
+    "message": "Spendier mir einen Kaffee"
+  },
+  "optCompact": {
+    "message": "Kompakte Buttons"
+  },
+  "optCompactHint": {
+    "message": "Nach ein paar Sekunden schrumpfen die Buttons auf einen. Zeige darauf, um alle zu sehen."
+  },
+  "optShortcutCopy": {
+    "message": "Link kopieren"
+  },
+  "optAdvanced": {
+    "message": "Erweitert"
+  },
+  "cmdCopyLink": {
+    "message": "Link des Mini-Fensters kopieren"
+  },
+  "cmdClose": {
+    "message": "Mini-Fenster schließen"
+  }
+}

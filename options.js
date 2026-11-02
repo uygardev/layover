@@ -1,14 +1,7 @@
 'use strict';
 const $ = (id) => document.getElementById(id);
 const t = (k) => chrome.i18n.getMessage(k) || k;
-const DEFAULTS = { enabled: true, width: 1100, height: 780, barPos: 'top-center', effects: true, linkShortcut: 'primary+alt',
-  neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'], autoCloseHours: 6, debug: false };
-const AUTO_CLOSE = [0, 1, 6, 12, 24];
-function cleanHost(v) {
-  let h = String(v || '').trim().toLowerCase();
-  h = h.replace(/^[a-z]+:\/\//, '').split(/[/?#]/)[0].replace(/^\*\./, '').replace(/^www\./, '').replace(/:\d+$/, '');
-  return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(h) ? h : '';
-}
+const { DEFAULTS, AUTO_CLOSE_OPTIONS, MIN_W, MIN_H, MAX_W, MAX_H, cleanHost } = LAYOVER;
 
 const isMac = /Mac/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '');
 const KEY = isMac ? { primary: '⌘', alt: '⌥', shift: '⇧', join: '' } : { primary: 'Ctrl', alt: 'Alt', shift: 'Shift', join: '+' };
@@ -32,7 +25,7 @@ for (const o of LINK_OPTIONS) {
   $('linkShortcut').appendChild(b);
 }
 
-for (const h of AUTO_CLOSE) {
+for (const h of AUTO_CLOSE_OPTIONS) {
   const b = document.createElement('button');
   b.type = 'button';
   b.setAttribute('role', 'radio');
@@ -45,7 +38,11 @@ document.documentElement.lang = chrome.i18n.getUILanguage();
 document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
 document.title = t('optTitle');
 $('siteInput').placeholder = t('optSitesPlaceholder');
-$('kbdClose').textContent = isMac ? '⌘W' : 'Ctrl+W';
+$('kbdCloseWin').textContent = isMac ? '⌘W' : 'Ctrl+W';
+for (const id of ['width', 'height']) {
+  $(id).min = id === 'width' ? MIN_W : MIN_H;
+  $(id).max = id === 'width' ? MAX_W : MAX_H;
+}
 
 let toastTimer;
 function saved() {
@@ -61,6 +58,7 @@ async function render() {
   const s = await chrome.storage.local.get({ ...DEFAULTS, log: [] });
   $('enabled').checked = s.enabled;
   $('effects').checked = s.effects;
+  $('barCompact').checked = s.barCompact;
   $('debug').checked = s.debug;
   if (document.activeElement !== $('width')) $('width').value = s.width;
   if (document.activeElement !== $('height')) $('height').value = s.height;
@@ -69,6 +67,7 @@ async function render() {
   for (const b of $('linkShortcut').querySelectorAll('button')) b.setAttribute('aria-checked', String(b.dataset.v === cur.v));
   $('linkHint').textContent = fill(t(cur.hint)) + (cur.v === 'off' ? '' : ' ' + t('hintAlso'));
   for (const b of $('autoClose').querySelectorAll('button')) b.setAttribute('aria-checked', String(+b.dataset.v === +s.autoCloseHours));
+  for (const g of document.querySelectorAll('[role=radiogroup]')) syncTabStops(g);
 
   const sites = $('sites');
   sites.replaceChildren();
@@ -113,14 +112,38 @@ async function render() {
   }
 }
 
+function syncTabStops(group) {
+  const buttons = [...group.querySelectorAll('[role=radio]')];
+  const on = buttons.find((b) => b.getAttribute('aria-checked') === 'true') || buttons[0];
+  for (const b of buttons) b.tabIndex = b === on ? 0 : -1;
+}
+
+for (const group of document.querySelectorAll('[role=radiogroup]')) {
+  group.addEventListener('keydown', (e) => {
+    const buttons = [...group.querySelectorAll('[role=radio]')];
+    const i = buttons.indexOf(document.activeElement);
+    if (i < 0) return;
+    const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: buttons.length - 1 }[e.key];
+    if (next == null) return;
+    e.preventDefault();
+    const b = buttons[(next + buttons.length) % buttons.length];
+    b.focus();
+    b.click();
+  });
+}
+
 async function renderShortcut() {
   const cmds = await chrome.commands.getAll();
-  const c = cmds.find((x) => x.name === 'open-in-main');
-  $('kbdAdd').textContent = (c && c.shortcut) || '—';
+  const key = (name) => (cmds.find((x) => x.name === name) || {}).shortcut || '';
+  $('kbdAdd').textContent = key('open-in-main') || '—';
+  $('kbdCopy').textContent = key('copy-link') || '—';
+  $('kbdClose').textContent = key('close-mini');
+  $('kbdClose').hidden = !key('close-mini');
 }
 
 $('enabled').addEventListener('change', (e) => save({ enabled: e.target.checked }));
 $('effects').addEventListener('change', (e) => save({ effects: e.target.checked }));
+$('barCompact').addEventListener('change', (e) => save({ barCompact: e.target.checked }));
 $('debug').addEventListener('change', (e) => save({ debug: e.target.checked }));
 $('linkShortcut').addEventListener('click', (e) => {
   const v = e.target.closest('button')?.dataset.v;
@@ -149,8 +172,8 @@ const clampSave = (key, lo, hi) => (e) => {
   if (!Number.isFinite(v)) return render();
   save({ [key]: Math.min(hi, Math.max(lo, v)) });
 };
-$('width').addEventListener('change', clampSave('width', 400, 4000));
-$('height').addEventListener('change', clampSave('height', 300, 3000));
+$('width').addEventListener('change', clampSave('width', MIN_W, MAX_W));
+$('height').addEventListener('change', clampSave('height', MIN_H, MAX_H));
 $('shortcuts').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }));
 $('try').addEventListener('click', () => chrome.runtime.sendMessage({ type: 'layover-try', url: 'https://example.com/' }));
 

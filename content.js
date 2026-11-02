@@ -1,22 +1,27 @@
 'use strict';
 (() => {
-  const SHORTCUTS = ['primary+alt', 'alt+shift', 'shift', 'alt', 'off'];
+  const { SHORTCUTS, DEFAULTS } = globalThis.LAYOVER;
   const isMac = /Mac/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '');
-  let combo = 'primary+alt';
+  let combo = null;
+  let loading = false;
 
   const alive = () => { try { return !!(chrome.runtime && chrome.runtime.id); } catch { return false; } };
+  const valid = (v) => (SHORTCUTS.includes(v) ? v : DEFAULTS.linkShortcut);
 
-  try {
-    chrome.storage.local.get({ linkShortcut: 'primary+alt' }).then((s) => {
-      combo = SHORTCUTS.includes(s.linkShortcut) ? s.linkShortcut : 'primary+alt';
-    }).catch(() => {});
-    chrome.storage.onChanged.addListener((changes, area) => {
-      if (area === 'local' && changes.linkShortcut) {
-        const v = changes.linkShortcut.newValue;
-        combo = SHORTCUTS.includes(v) ? v : 'primary+alt';
-      }
-    });
-  } catch {}
+  function load() {
+    if (loading) return;
+    loading = true;
+    try {
+      chrome.storage.local.get({ linkShortcut: DEFAULTS.linkShortcut }).then((s) => { combo = valid(s.linkShortcut); }).catch(() => {});
+      chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === 'local' && changes.linkShortcut) combo = valid(changes.linkShortcut.newValue);
+      });
+    } catch {}
+  }
+
+  function onPrep(e) {
+    if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey || e.key === 'Alt' || e.key === 'Shift' || e.key === 'Meta' || e.key === 'Control') load();
+  }
 
   function matches(e) {
     const primary = isMac ? e.metaKey : e.ctrlKey;
@@ -43,16 +48,25 @@
   }
 
   function onClick(e) {
-    if (!e.isTrusted || e.button !== 0 || combo === 'off' || !matches(e)) return;
+    if (!e.isTrusted || e.button !== 0 || !combo || combo === 'off' || !matches(e)) return;
     const url = linkUrl(e);
     if (!/^https?:\/\//i.test(url)) return;
-    if (!alive()) { window.removeEventListener('click', onClick, true); return; }
+    if (!alive()) { detach(); return; }
     e.preventDefault();
     e.stopImmediatePropagation();
     try { chrome.runtime.sendMessage({ type: 'layover-open', url }); } catch {}
   }
 
-  if (typeof window.__layoverClick === 'function') window.removeEventListener('click', window.__layoverClick, true);
-  window.__layoverClick = onClick;
+  function detach() {
+    window.removeEventListener('click', onClick, true);
+    window.removeEventListener('keydown', onPrep, true);
+    window.removeEventListener('pointerdown', onPrep, true);
+  }
+
+  if (typeof window.__layoverDetach === 'function') window.__layoverDetach();
+  else if (typeof window.__layoverClick === 'function') window.removeEventListener('click', window.__layoverClick, true);
+  window.__layoverDetach = detach;
+  window.addEventListener('keydown', onPrep, true);
+  window.addEventListener('pointerdown', onPrep, true);
   window.addEventListener('click', onClick, true);
 })();
