@@ -58,8 +58,8 @@ function wav() {
   return 'data:audio/wav;base64,' + buf.toString('base64');
 }
 const clipboard = {
-  read() { try { return process.platform === 'darwin' ? execSync('pbpaste', { encoding: 'utf8' }) : null; } catch { return null; } },
-  write(s) { try { if (process.platform === 'darwin' && s != null) execSync('pbcopy', { input: s }); } catch {} },
+  read() { try { return process.platform === 'darwin' ? execSync('pbpaste', { encoding: 'utf8', timeout: 3000 }) : null; } catch { return null; } },
+  write(s) { try { if (process.platform === 'darwin' && s != null) execSync('pbcopy', { input: s, timeout: 3000 }); } catch {} },
 };
 
 async function externalLinks(sw) {
@@ -98,7 +98,7 @@ async function externalLinks(sw) {
 
   await pg.send('Emulation.setFocusEmulationEnabled', { enabled: true });
   const saved = clipboard.read();
-  const copied = await sw.eval(`copyLink(${pop.id})`);
+  const copied = await Promise.race([sw.eval(`copyLink(${pop.id})`), sleep(5000).then(() => 'timed out')]);
   const now = clipboard.read();
   clipboard.write(saved);
   check('copy-link shortcut copies the page address', copied === true && (now === null || now === 'https://example.com/'), `result=${copied} clipboard=${JSON.stringify(now)}`);
@@ -260,6 +260,7 @@ async function lifecycle(sw, main) {
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
+      if (req.url.startsWith('/redirect-local')) { res.writeHead(302, { location: 'http://localhost:47615/fast' }); res.end(); return; }
       if (req.url.startsWith('/redirect')) { res.writeHead(302, { location: 'http://127.0.0.1:47615/fast' }); res.end(); return; }
       const delay = req.url.startsWith('/slow') ? 1200 : 0;
       setTimeout(() => { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<title>layover test</title><p>ok</p>'); }, delay);
@@ -342,6 +343,17 @@ async function earlyPop(sw, main) {
     await sleep(2500);
     all = await wins(sw);
     check('a link that redirects to a never-mini site ends up as a normal tab', !all.some((w) => w.type === 'popup') && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).startsWith('http://127.0.0.1:47615/fast')), layout(all));
+
+    for (const background of [false, true]) {
+      await reset();
+      await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', '127.0.0.1'] })`);
+      await sleep(300);
+      await sw.eval(background ? `setActivity({ inactive: true, at: Date.now() })` : `setActivity({ inactive: false, at: 0 })`);
+      L.sendUrl('http://127.0.0.1:47615/redirect-local');
+      r = await waitForPopup(sw, 2600);
+      all = await wins(sw);
+      check(`Chrome ${background ? 'in the background' : 'in front'}: a short link on the never-mini list that redirects elsewhere opens as a normal tab`, !r.popup && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).startsWith('http://localhost:47615/fast')), `${layout(all)} ${JSON.stringify(await lastLog())}`);
+    }
     await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'] })`);
 
     await reset();
@@ -507,6 +519,13 @@ async function incognito() {
 (async () => {
   const t0 = Date.now();
   console.log('Chrome:', L.CHROME);
+  if (process.platform === 'darwin') {
+    try {
+      if (/"CGSSessionScreenIsLocked"=Yes/.test(execSync('ioreg -n Root -d1', { encoding: 'utf8' }))) {
+        console.log('WARNING: the screen is locked. macOS does not focus, minimize or restore windows or allow clipboard writes while locked, so those checks will fail.');
+      }
+    } catch {}
+  }
   await L.quit();
   fs.rmSync(L.PROFILE, { recursive: true, force: true });
   L.syncExtension();

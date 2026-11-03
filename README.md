@@ -69,7 +69,7 @@ No build step and no dependencies. Edit the files, then press the reload button 
 
 ### Tests
 
-`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 66 scenarios: links from other apps, early pop-out and its undo, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
+`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 68 scenarios: links from other apps, early pop-out and its undo, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
 
 ```bash
 npx @puppeteer/browsers install chrome@stable

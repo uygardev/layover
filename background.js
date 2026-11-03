@@ -147,8 +147,8 @@ const EARLY_AFTER_ACTIVATION_MS = 1000;
 chrome.tabs.onCreated.addListener((tab) => {
   const now = Date.now();
   for (const [id, c] of candidates) if (now - c.at > CANDIDATE_TTL_MS) { candidates.delete(id); earlyDecisions.delete(id); }
-  candidates.set(tab.id, { at: now, windowId: tab.windowId });
   const url = tab.pendingUrl || tab.url || '';
+  candidates.set(tab.id, { at: now, windowId: tab.windowId, firstUrl: url });
   if (/^https?:/i.test(url) && tab.openerTabId == null && tab.active) earlyDecisions.set(tab.id, popEarly(tab, url, now).catch(() => false));
 });
 chrome.tabs.onRemoved.addListener((tabId) => { candidates.delete(tabId); earlyDecisions.delete(tabId); fadePending.delete(tabId); });
@@ -196,6 +196,11 @@ async function settleEarly(d) {
   if (tab && (await isMini(tab.windowId))) await moveToMain(tab.windowId);
 }
 
+chrome.webNavigation.onBeforeNavigate.addListener((d) => {
+  const cand = d.frameId === 0 && candidates.get(d.tabId);
+  if (cand && !cand.firstUrl) cand.firstUrl = d.url;
+});
+
 chrome.webNavigation.onCommitted.addListener(async (d) => {
   if (d.frameId !== 0) return;
   const early = earlyDecisions.get(d.tabId);
@@ -219,7 +224,7 @@ chrome.webNavigation.onCommitted.addListener(async (d) => {
   const external = d.transitionType === 'start_page' || d.transitionType === 'auto_toplevel';
   const web = /^https?:/i.test(d.url);
   const inGrace = Date.now() - startupAt < STARTUP_GRACE_MS;
-  const blocked = external && web && isNeverMini(d.url, settings.neverMini);
+  const blocked = external && web && (isNeverMini(d.url, settings.neverMini) || isNeverMini(cand.firstUrl || '', settings.neverMini));
   const go = settings.enabled && external && web && !inGrace && !blocked;
 
   debugLog({ host: hostOf(d.url), transition: d.transitionType,
