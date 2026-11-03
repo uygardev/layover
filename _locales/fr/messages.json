@@ -6,7 +6,7 @@
     "message": "Les liens venant d'autres apps font escale dans une petite fenêtre temporaire. Gardez la page en onglet d'un clic, ou fermez-la."
   },
   "actionTitle": {
-    "message": "Layover : ouvrir cet onglet dans une mini-fenêtre"
+    "message": "Paramètres de Layover"
   },
   "cmdOpenInMain": {
     "message": "Déplacer la page de la mini-fenêtre vers la fenêtre principale, en onglet"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Clic droit › Ouvrir dans Layover fonctionne aussi."
   },
-  "cmdPopTab": {
-    "message": "Ouvrir l'onglet actuel dans une mini-fenêtre"
+  "cmdOpenSettings": {
+    "message": "Ouvrir les paramètres de Layover"
   },
   "barBack": {
     "message": "Retour"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} h"
-  },
-  "optShortcutTab": {
-    "message": "Déplacer cet onglet dans une mini-fenêtre"
-  },
-  "optShortcutTabValue": {
-    "message": "Cliquez sur l'icône Layover dans la barre d'outils"
   },
   "menuSearch": {
     "message": "Rechercher dans Layover : « %s »"

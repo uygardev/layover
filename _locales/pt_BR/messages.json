@@ -6,7 +6,7 @@
     "message": "Links de outros apps fazem escala em uma janela pequena e temporária. Mantenha a página como guia com um clique ou feche-a."
   },
   "actionTitle": {
-    "message": "Layover: abrir esta guia em uma minijanela"
+    "message": "Configurações do Layover"
   },
   "cmdOpenInMain": {
     "message": "Mover a página da minijanela para a janela principal como guia"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Clique direito › Abrir no Layover também funciona."
   },
-  "cmdPopTab": {
-    "message": "Abrir a guia atual em uma minijanela"
+  "cmdOpenSettings": {
+    "message": "Abrir as configurações do Layover"
   },
   "barBack": {
     "message": "Voltar"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} h"
-  },
-  "optShortcutTab": {
-    "message": "Mover esta guia para uma minijanela"
-  },
-  "optShortcutTabValue": {
-    "message": "Clique no ícone do Layover na barra de ferramentas"
   },
   "menuSearch": {
     "message": "Pesquisar no Layover: “%s”"

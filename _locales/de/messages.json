@@ -6,7 +6,7 @@
     "message": "Links aus anderen Apps landen zuerst in einem kleinen, temporären Fenster. Behalte die Seite per Klick als Tab oder schließe sie."
   },
   "actionTitle": {
-    "message": "Layover: diesen Tab in einem Mini-Fenster öffnen"
+    "message": "Layover-Einstellungen"
   },
   "cmdOpenInMain": {
     "message": "Seite aus dem Mini-Fenster als Tab ins Hauptfenster verschieben"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Rechtsklick › In Layover öffnen funktioniert ebenfalls."
   },
-  "cmdPopTab": {
-    "message": "Aktuellen Tab in einem Mini-Fenster öffnen"
+  "cmdOpenSettings": {
+    "message": "Layover-Einstellungen öffnen"
   },
   "barBack": {
     "message": "Zurück"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} Std."
-  },
-  "optShortcutTab": {
-    "message": "Diesen Tab in ein Mini-Fenster verschieben"
-  },
-  "optShortcutTabValue": {
-    "message": "Auf das Layover-Symbol in der Symbolleiste klicken"
   },
   "menuSearch": {
     "message": "In Layover suchen: „%s“"

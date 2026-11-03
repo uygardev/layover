@@ -6,7 +6,7 @@
     "message": "Links from other apps stop over in a small, temporary window. Keep the page as a tab with one click, or close it."
   },
   "actionTitle": {
-    "message": "Layover: open this tab in a mini window"
+    "message": "Layover settings"
   },
   "cmdOpenInMain": {
     "message": "Move the mini window's page into the main window as a tab"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Right-click › Open in Layover also works."
   },
-  "cmdPopTab": {
-    "message": "Open the current tab in a mini window"
+  "cmdOpenSettings": {
+    "message": "Open Layover settings"
   },
   "barBack": {
     "message": "Back"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} h"
-  },
-  "optShortcutTab": {
-    "message": "Move this tab into a mini window"
-  },
-  "optShortcutTabValue": {
-    "message": "Click the Layover icon in the toolbar"
   },
   "menuSearch": {
     "message": "Search in Layover: “%s”"

@@ -19,8 +19,7 @@ function prefs(fn) {
 }
 async function restart(args = []) {
   await L.quit();
-  L.launch(args);
-  await L.json('/json/version');
+  await L.start(args);
   await sleep(2500);
   return L.worker();
 }
@@ -188,6 +187,14 @@ async function clicks(sw, main) {
   const all = await wins(sw);
   check('a never-mini site opens as a normal tab', !all.some((w) => w.type === 'popup') && all.some((w) => w.type === 'normal' && w.tabs.some((t) => urlOf(t).startsWith('https://example.org'))), layout(all));
   await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'] })`);
+  const cases = {
+    'https://zoom.us/j/1': true, 'https://www.zoom.us/j/1': true, 'https://us02web.zoom.us/j/1': true, 'https://ZOOM.US:443/x': true,
+    'https://meet.google.com/abc-defg-hij': true, 'https://notzoom.us/': false, 'https://zoom.us.example.com/': false,
+    'https://google.com/': false, 'https://teams.microsoft.com.evil.io/': false,
+  };
+  const got = await sw.eval(`(async () => { const s = await getSettings(); const c = ${JSON.stringify(Object.keys(cases))}; return Object.fromEntries(c.map((u) => [u, isNeverMini(u, s.neverMini)])); })()`);
+  const wrong = Object.keys(cases).filter((u) => got[u] !== cases[u]);
+  check('never-mini matching covers subdomains and rejects look-alike hosts', wrong.length === 0, JSON.stringify(wrong.map((u) => [u, got[u]])));
 }
 
 async function lifecycle(sw, main) {
@@ -196,8 +203,9 @@ async function lifecycle(sw, main) {
   const t1 = await sw.eval(`(async () => openMini({ url: 'https://example.com/' }, ${main.id}, await getSettings()))()`);
   const audio = 'data:text/html,<audio autoplay loop src="' + wav() + '"></audio>';
   const t2 = await sw.eval(`(async () => openMini({ url: ${JSON.stringify(audio)} }, ${main.id}, await getSettings()))()`);
-  await sleep(2500);
-  const quiet = await sw.eval(`chrome.tabs.get(${t1})`), loud = await sw.eval(`chrome.tabs.get(${t2})`);
+  let loud = null;
+  for (let i = 0; i < 24 && !(loud && loud.audible); i++) { await sleep(250); loud = await sw.eval(`chrome.tabs.get(${t2})`); }
+  const quiet = await sw.eval(`chrome.tabs.get(${t1})`);
   await sw.eval(`chrome.windows.update(${main.id}, { focused: true })`);
   await sleep(300);
   await sw.eval(`(async () => { const m = await getMini(); m[${quiet.windowId}] = m[${loud.windowId}] = Date.now() - 7 * 3600e3; await chrome.storage.session.set({ mini: m }); })()`);
@@ -224,11 +232,11 @@ async function lifecycle(sw, main) {
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
-      if (req.url.startsWith('/redirect')) { res.writeHead(302, { location: 'http://127.0.0.1:8765/fast' }); res.end(); return; }
+      if (req.url.startsWith('/redirect')) { res.writeHead(302, { location: 'http://127.0.0.1:47615/fast' }); res.end(); return; }
       const delay = req.url.startsWith('/slow') ? 1200 : 0;
       setTimeout(() => { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<title>layover test</title><p>ok</p>'); }, delay);
     });
-    server.listen(8765, () => resolve(server));
+    server.listen(47615, () => resolve(server));
   });
 }
 
@@ -257,7 +265,7 @@ async function earlyPop(sw, main) {
     await reset();
     await inactive();
     const t0 = Date.now();
-    L.sendUrl('http://127.0.0.1:8765/slow-background');
+    L.sendUrl('http://127.0.0.1:47615/slow-background');
     let r = await waitForPopup(sw, 3000);
     const opened = Date.now() - t0;
     check('Chrome in the background: mini window opens before the page has loaded', !!r.popup && opened < 1000, `${opened} ms after the link was sent, server answers after 1200 ms`);
@@ -273,17 +281,18 @@ async function earlyPop(sw, main) {
     await sw.eval(`chrome.windows.update(${main.id}, { state: 'minimized' })`);
     await sleep(1200);
     const t1 = Date.now();
-    L.sendUrl('http://127.0.0.1:8765/slow-minimized');
+    const snap = await sw.eval(`chrome.storage.session.get(['bgSnap', 'fgAt'])`);
+    L.sendUrl('http://127.0.0.1:47615/slow-minimized');
     r = await waitForPopup(sw, 3000);
     const opened2 = Date.now() - t1;
     await sleep(2200);
     all = await wins(sw);
     check('main window minimized: mini window opens before the page has loaded', !!r.popup && opened2 < 1200, `${opened2} ms`);
-    check('main window minimized: it is minimized again', all.find((w) => w.id === main.id).state === 'minimized', layout(all));
+    check('main window minimized: it is minimized again', all.find((w) => w.id === main.id).state === 'minimized', `${layout(all)} snapshot before the link: ${JSON.stringify(snap)} sent at ${t1}`);
 
     await reset();
     await inactive();
-    await sw.eval(`chrome.tabs.create({ windowId: ${main.id}, url: 'http://127.0.0.1:8765/slow-extension', active: true })`);
+    await sw.eval(`chrome.tabs.create({ windowId: ${main.id}, url: 'http://127.0.0.1:47615/slow-extension', active: true })`);
     r = await waitForPopup(sw, 1500);
     await sleep(2200);
     all = await wins(sw);
@@ -294,15 +303,22 @@ async function earlyPop(sw, main) {
     await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', '127.0.0.1'] })`);
     await sleep(300);
     await inactive();
-    L.sendUrl('http://localhost:8765/redirect');
+    L.sendUrl('http://127.0.0.1:47615/slow-never');
+    r = await waitForPopup(sw, 2600);
+    all = await wins(sw);
+    check('Chrome in the background: a never-mini link never shows a mini window, not even briefly', !r.popup && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).includes('/slow-never')), layout(all));
+
+    await reset();
+    await inactive();
+    L.sendUrl('http://localhost:47615/redirect');
     await sleep(2500);
     all = await wins(sw);
-    check('a link that redirects to a never-mini site ends up as a normal tab', !all.some((w) => w.type === 'popup') && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).startsWith('http://127.0.0.1:8765/fast')), layout(all));
+    check('a link that redirects to a never-mini site ends up as a normal tab', !all.some((w) => w.type === 'popup') && all.find((w) => w.id === main.id).tabs.some((t) => urlOf(t).startsWith('http://127.0.0.1:47615/fast')), layout(all));
     await sw.eval(`chrome.storage.local.set({ neverMini: ['zoom.us', 'meet.google.com', 'teams.microsoft.com', 'teams.live.com'] })`);
 
     await reset();
     await sw.eval(`setActivity({ inactive: false, at: 0 })`);
-    L.sendUrl('http://127.0.0.1:8765/slow-active');
+    L.sendUrl('http://127.0.0.1:47615/slow-active');
     await sleep(800);
     const before = (await popups(sw)).length;
     await sleep(1800);
@@ -336,6 +352,22 @@ async function settingsPage(sw) {
   const pos = await sw.eval(`chrome.storage.local.get('barPos').then((r) => r.barPos)`);
   const focused = await pg.eval(`document.activeElement.dataset.v`);
   check('arrow keys move the selection in a radio group', pos === 'top-right' && focused === 'top-right', `${pos} / ${focused}`);
+
+  const addSite = (v) => pg.eval(`(() => { const i = document.getElementById('siteInput'); i.value = ${JSON.stringify(v)}; document.getElementById('siteForm').requestSubmit(); })()`);
+  const sites = () => sw.eval(`chrome.storage.local.get('neverMini').then((r) => r.neverMini)`);
+  await addSite('https://www.Example.NET/some/path?q=1');
+  await sleep(500);
+  let list = await sites();
+  const chip = await pg.eval(`[...document.querySelectorAll('#sites .chip')].some((c) => c.firstChild.textContent === 'example.net')`);
+  check('settings page: adding a pasted link stores just the site', list.includes('example.net') && chip, JSON.stringify(list));
+  await addSite('not a site');
+  await sleep(300);
+  const err = await pg.eval(`!document.getElementById('siteErr').hidden`);
+  check('settings page: an invalid site shows an error and is not stored', err && (await sites()).length === list.length, String(err));
+  await pg.eval(`[...document.querySelectorAll('#sites .chip')].find((c) => c.firstChild.textContent === 'example.net').querySelector('button').click()`);
+  await sleep(500);
+  list = await sites();
+  check('settings page: removing a site deletes it', !list.includes('example.net') && list.includes('zoom.us'), JSON.stringify(list));
   await sw.eval(`chrome.storage.local.set({ barPos: 'top-center' })`);
 
   await pg.eval(`document.getElementById('barCompact').click()`);
@@ -353,6 +385,16 @@ async function settingsPage(sw) {
   await closePopups(sw);
   await sw.call(`chrome.tabs.remove(${tab.id})`);
   pg.close();
+
+  await sleep(800);
+  const before = await wins(sw);
+  const opened = await sw.call(`openSettings().then(() => 'ok')`);
+  await sleep(1200);
+  const after = await wins(sw);
+  const targets = (await L.json('/json')).filter((x) => x.type === 'page' && x.url.endsWith('/options.html'));
+  check('toolbar icon opens the settings page', opened === 'ok' && targets.length === 1 && !after.some((w) => w.type === 'popup') && after.length === before.length, `${opened} ${JSON.stringify(targets.map((x) => x.url))} ${layout(after)}`);
+  check('toolbar icon is wired to opening the settings', await sw.eval(`chrome.action.onClicked.hasListener(openSettings)`));
+  for (const x of targets) await fetch(`http://127.0.0.1:9333/json/close/${x.id}`).catch(() => {});
 }
 
 async function startup() {
@@ -360,8 +402,7 @@ async function startup() {
   await L.quit();
   prefs((j) => { j.session = { ...(j.session || {}), restore_on_startup: 4, startup_urls: ['https://example.com/', 'https://example.org/'] }; });
   const t0 = Date.now();
-  L.launch([]);
-  await L.json('/json/version');
+  await L.start([]);
   await sleep(Math.max(0, 2500 - (Date.now() - t0)));
   L.sendUrl('https://example.net/');
   await sleep(3500);
@@ -441,8 +482,7 @@ async function incognito() {
   await L.quit();
   fs.rmSync(L.PROFILE, { recursive: true, force: true });
   L.syncExtension();
-  L.launch(['about:blank']);
-  await L.json('/json/version');
+  await L.start(['about:blank']);
   await sleep(2500);
   let sw = await L.worker();
   await sw.eval(`chrome.storage.local.set({ debug: true })`);

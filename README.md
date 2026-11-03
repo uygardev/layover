@@ -17,7 +17,7 @@ Layover is a Chrome extension (Manifest V3). It also works in other Chromium bro
 - **Add to tabs** moves the page into your main window as it is. No reload, so logins, scroll position and form input stay.
 - **Open any link in a mini window** with a modifier + click (⌥⌘ + click on Mac, Ctrl + Alt + click elsewhere) or from the right-click menu.
 - **Search selected text** in a mini window, using the search engine your browser already uses.
-- **Move the current tab into a mini window** by clicking the toolbar icon. Click it again inside a mini window to send the page back.
+- **Settings one click away.** Click the Layover icon in the toolbar to open the settings.
 - **Keyboard shortcuts** inside a mini window: Alt + Shift + O adds it to your tabs, Alt + Shift + C copies its link, Alt + Shift + W closes it. All three can be changed in `chrome://extensions/shortcuts`. Maximizing a mini window also adds it to your tabs.
 - **Remembers where you put it.** The window size is kept, and during a browser session the next mini window opens where you last moved one. If more than one is open, they stack like cards.
 - **Never-mini list.** Links to some sites (meeting links by default: Zoom, Google Meet, Teams) always open as normal tabs.
@@ -61,7 +61,7 @@ The extension needs the `webNavigation` permission and access to all sites to do
 
 ### Settings
 
-Right-click the Layover icon in the toolbar and choose **Options**, or open it from `chrome://extensions`. There you can change the window size, the position of the floating bar, compact buttons, the click shortcut, the auto-close delay and the never-mini list, and try it out with a sample link.
+Click the Layover icon in the toolbar. There you can change the window size, the position of the floating bar, compact buttons, the click shortcut, the auto-close delay and the never-mini list, and try it out with a sample link.
 
 ## Development
 
@@ -69,7 +69,7 @@ No build step and no dependencies. Edit the files, then press the reload button 
 
 ### Tests
 
-`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 56 scenarios: links from other apps, early pop-out and its undo, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
+`test/run.js` drives a real browser through the Chrome DevTools Protocol and checks 63 scenarios: links from other apps, early pop-out and its undo, the floating bar, add to tabs, shortcuts, placement, auto-close, private windows, browser start and the settings page. It needs Node 22 or newer and Chrome for Testing, because branded Chrome no longer loads unpacked extensions from the command line.
 
 ```bash
 npx @puppeteer/browsers install chrome@stable

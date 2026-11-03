@@ -6,7 +6,7 @@
     "message": "Diğer uygulamalardan gelen linkler önce küçük, geçici bir pencereye uğrar. İşine yararsa tek tıkla sekmelere ekle, yaramazsa kapat."
   },
   "actionTitle": {
-    "message": "Layover: bu sekmeyi mini pencerede aç"
+    "message": "Layover ayarları"
   },
   "cmdOpenInMain": {
     "message": "Mini penceredeki sayfayı ana pencereye sekme olarak taşı"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Sağ tık › Layover ile aç da çalışır."
   },
-  "cmdPopTab": {
-    "message": "Açık sekmeyi mini pencerede aç"
+  "cmdOpenSettings": {
+    "message": "Layover ayarlarını aç"
   },
   "barBack": {
     "message": "Geri"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} sa"
-  },
-  "optShortcutTab": {
-    "message": "Bu sekmeyi mini pencereye al"
-  },
-  "optShortcutTabValue": {
-    "message": "Araç çubuğundaki Layover ikonuna tıkla"
   },
   "menuSearch": {
     "message": "Layover ile ara: “%s”"

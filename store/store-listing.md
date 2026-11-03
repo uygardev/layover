@@ -1,7 +1,7 @@
-# Chrome Web Store listing: Layover 1.5.1
+# Chrome Web Store listing: Layover 1.5.2
 
 ## Package
-- File: `layover-1.5.1.zip` (18 files, about 106 KB uncompressed)
+- File: `layover-1.5.2.zip` (18 files, about 105 KB uncompressed)
 - Item ID: `jdjdgnibdlmogkbaibfdjgpohjjhjinm`
 - Manifest V3. No remote code, no analytics, no network requests.
 
@@ -25,7 +25,7 @@ Click a link in Mail, Slack, Messages or any other app and it stops over in a sm
 • Right-click any link › Open in Layover
 • Select text, right-click › Search in Layover: results from your own default search engine open in a mini window
 • Stack as many mini windows as you like: each new one opens a step lower and to the right
-• Click the toolbar icon to move the current tab into a mini window (and back)
+• Click the toolbar icon to open the settings
 • Back and Copy link buttons right in the mini window
 • Unused mini windows close by themselves after the time you choose (1 to 24 hours, or never)
 • Keep some sites out: links from other apps to meeting sites like Zoom or Google Meet open as normal tabs
@@ -52,7 +52,7 @@ Mail, Slack, Mesajlar ya da başka bir uygulamada bir linke tıkladığında say
 • Herhangi bir linke sağ tık › Layover ile aç
 • Metni seç, sağ tık › Layover ile ara: sonuçlar kendi varsayılan arama motorunla mini pencerede açılır
 • İstediğin kadar mini pencere aç: her yenisi bir öncekinin biraz sağında ve altında, deste gibi açılır
-• Araç çubuğundaki ikona tıklayarak açık sekmeyi mini pencereye al (ve geri döndür)
+• Araç çubuğundaki ikona tıklayınca ayarlar açılır
 • Mini pencerede Geri ve Linki kopyala butonları
 • Kullanılmayan mini pencereler seçtiğin süre sonunda (1 ile 24 saat arası ya da hiçbir zaman) kendiliğinden kapanır
 • Bazı siteleri hariç tut: diğer uygulamalardan Zoom, Google Meet gibi toplantı sitelerine gelen linkler normal sekmede açılır

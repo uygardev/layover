@@ -135,11 +135,10 @@ function setAddToTabsMenu(on) {
   return menuQueue;
 }
 
-chrome.action.onClicked.addListener(async (tab) => {
-  if (!tab || tab.id == null) return;
-  if (await isMini(tab.windowId)) return moveToMain(tab.windowId);
-  await openMini({ tabId: tab.id }, tab.windowId, await getSettings());
-});
+function openSettings() {
+  return chrome.runtime.openOptionsPage().catch(() => chrome.tabs.create({ url: chrome.runtime.getURL('options.html') }));
+}
+chrome.action.onClicked.addListener(openSettings);
 
 const candidates = new Map();
 const earlyDecisions = new Map();

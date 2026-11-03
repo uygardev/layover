@@ -52,6 +52,16 @@ function killChrome() {
     try { execSync(`pkill -f ${JSON.stringify(pattern)}`); } catch {}
   }
 }
+async function start(args = []) {
+  for (let attempt = 1; ; attempt++) {
+    launch(args);
+    try { await json('/json/version', 75); return; } catch (e) {
+      if (attempt >= 3) throw e;
+      killChrome();
+      await sleep(2500);
+    }
+  }
+}
 async function quit() {
   try {
     const r = await fetch(`http://127.0.0.1:${PORT}/json/version`);
@@ -66,8 +76,8 @@ async function quit() {
   killChrome();
   await sleep(1000);
 }
-async function json(p) {
-  for (let i = 0; i < 100; i++) {
+async function json(p, tries = 100) {
+  for (let i = 0; i < tries; i++) {
     try { const r = await fetch(`http://127.0.0.1:${PORT}${p}`); return await r.json(); } catch { await sleep(200); }
   }
   throw new Error('chrome not reachable');
@@ -136,4 +146,4 @@ function check(name, ok, detail = '') {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${ok || !detail ? '' : '\n      ' + detail}`);
 }
 
-module.exports = { CHROME, PROFILE, EXT, sleep, syncExtension, launch, sendUrl, killChrome, quit, json, Session, worker, page, check, results };
+module.exports = { CHROME, PROFILE, EXT, sleep, syncExtension, launch, start, sendUrl, killChrome, quit, json, Session, worker, page, check, results };

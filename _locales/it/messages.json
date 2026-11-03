@@ -6,7 +6,7 @@
     "message": "I link dalle altre app fanno scalo in una piccola finestra temporanea. Tieni la pagina come scheda con un clic, oppure chiudila."
   },
   "actionTitle": {
-    "message": "Layover: apri questa scheda in una minifinestra"
+    "message": "Impostazioni di Layover"
   },
   "cmdOpenInMain": {
     "message": "Sposta la pagina della minifinestra nella finestra principale come scheda"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Anche clic destro › Apri in Layover funziona."
   },
-  "cmdPopTab": {
-    "message": "Apri la scheda corrente in una minifinestra"
+  "cmdOpenSettings": {
+    "message": "Apri le impostazioni di Layover"
   },
   "barBack": {
     "message": "Indietro"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} h"
-  },
-  "optShortcutTab": {
-    "message": "Sposta questa scheda in una minifinestra"
-  },
-  "optShortcutTabValue": {
-    "message": "Fai clic sull'icona di Layover nella barra degli strumenti"
   },
   "menuSearch": {
     "message": "Cerca in Layover: «%s»"

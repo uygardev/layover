@@ -6,7 +6,7 @@
     "message": "Los enlaces de otras apps hacen escala en una ventana pequeña y temporal. Guarda la página como pestaña con un clic o ciérrala."
   },
   "actionTitle": {
-    "message": "Layover: abrir esta pestaña en una miniventana"
+    "message": "Ajustes de Layover"
   },
   "cmdOpenInMain": {
     "message": "Mover la página de la miniventana a la ventana principal como pestaña"
@@ -122,8 +122,8 @@
   "hintAlso": {
     "message": "Clic derecho › Abrir en Layover también funciona."
   },
-  "cmdPopTab": {
-    "message": "Abrir la pestaña actual en una miniventana"
+  "cmdOpenSettings": {
+    "message": "Abrir los ajustes de Layover"
   },
   "barBack": {
     "message": "Atrás"
@@ -166,12 +166,6 @@
   },
   "optHours": {
     "message": "{n} h"
-  },
-  "optShortcutTab": {
-    "message": "Mover esta pestaña a una miniventana"
-  },
-  "optShortcutTabValue": {
-    "message": "Haz clic en el icono de Layover en la barra de herramientas"
   },
   "menuSearch": {
     "message": "Buscar en Layover: «%s»"
