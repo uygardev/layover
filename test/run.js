@@ -159,6 +159,34 @@ async function placement(sw, main) {
   check('resizing a mini window stores the new size', stored.width === 900 && stored.height === 700, JSON.stringify(stored));
   await sw.eval(`chrome.storage.local.set({ width: 1100, height: 780 })`);
   await closePopups(sw);
+
+  const displays = (() => {
+    if (process.platform !== 'darwin') return [];
+    try {
+      const out = execSync(`osascript -l JavaScript -e 'ObjC.import("AppKit"); const s = ObjC.unwrap($.NSScreen.screens); const H = s[0].frame.size.height; JSON.stringify(s.map((d) => ({ left: d.frame.origin.x, top: H - d.frame.origin.y - d.frame.size.height, width: d.frame.size.width, height: d.frame.size.height })))'`, { encoding: 'utf8' });
+      return JSON.parse(out);
+    } catch { return []; }
+  })();
+  const others = displays.slice(1);
+  if (!others.length) console.log('      (only one display: multi-monitor placement checks run on the main display only)');
+  for (const d of [displays[0] || { left: 0, top: 0, width: 1600, height: 1000 }, ...others]) {
+    const want = { left: d.left + 60, top: d.top + 60, width: Math.min(1500, d.width - 120), height: Math.min(950, d.height - 120) };
+    await sw.eval(`chrome.windows.update(${main.id}, { state: 'normal', left: ${want.left}, top: ${want.top}, width: ${want.width}, height: ${want.height} })`);
+    await sleep(700);
+    await sw.eval(`chrome.storage.session.remove('lastPos')`);
+    const m2 = await sw.eval(`chrome.windows.get(${main.id})`);
+    await sw.eval(`(async () => openMini({ url: 'https://example.com/' }, ${main.id}, await getSettings()))()`);
+    await settle(sw);
+    const p2 = (await popups(sw))[0];
+    const cx = p2 && p2.left + p2.width / 2, cy = p2 && p2.top + p2.height / 2;
+    const onMain = p2 && cx >= m2.left && cx <= m2.left + m2.width && cy >= m2.top && cy <= m2.top + m2.height;
+    const label = d === displays[0] || !displays.length ? 'the main display' : `the display at x=${d.left}, y=${d.top}`;
+    check(`mini window opens over the browser window on ${label}`, onMain, `main ${JSON.stringify([m2.left, m2.top, m2.width, m2.height])} popup ${p2 && JSON.stringify([p2.left, p2.top, p2.width, p2.height])}`);
+    await closePopups(sw);
+  }
+  const home = displays[0] || { left: 0, top: 0 };
+  await sw.eval(`chrome.windows.update(${main.id}, { left: ${home.left}, top: ${home.top}, width: 1600, height: 1000 })`);
+  await sleep(500);
 }
 
 async function clicks(sw, main) {

@@ -262,8 +262,8 @@ async function openMini(source, sourceWindowId, settings, opts = {}) {
   if (src && src.incognito) geo.incognito = true;
   if (src && src.type !== 'normal') src = (await mainWindowFor(src)) || src;
   if (src) {
-    geo.left = Math.max(0, Math.round(src.left + (src.width - width) / 2));
-    geo.top = Math.max(0, Math.round(src.top + (src.height - height) / 2));
+    geo.left = Math.round(src.left + Math.max(0, (src.width - width) / 2));
+    geo.top = Math.round(src.top + Math.max(0, (src.height - height) / 2));
     const last = await lastMiniBounds();
     if (last) {
       const left = last.left + DECK_STEP, top = last.top + DECK_STEP;
